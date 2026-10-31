@@ -58,7 +58,7 @@ npm run check:next   # Next 호환 확인
 | [은하수 글로브](registry/components/galaxy-globe)                     | 컴포넌트 | 모션     | PetGlobe                 |
 | [KPI 스코어보드](registry/components/kpi-scoreboard)                  | 컴포넌트 | 데이터   | PlaceWave                |
 | [로딩 오버레이](registry/components/loading-overlay)                  | 컴포넌트 | 오버레이 | HeartTable AI            |
-| [경로 생키](registry/components/path-sankey)                          | 컴포넌트 | 데이터   | PlaceWave                |
+| [생키 다이어그램](registry/components/path-sankey)                    | 컴포넌트 | 데이터   | PlaceWave                |
 | [인물 선택 목록](registry/components/portrait-choice)                 | 컴포넌트 | 입력     | Murder Mystery Generator |
 | [마스크 텍스트 등장](registry/components/rise-text)                   | 컴포넌트 | 모션     | 포트폴리오 사이트        |
 | [세그먼트 컨트롤](registry/components/segmented-control)              | 컴포넌트 | 입력     |                          |

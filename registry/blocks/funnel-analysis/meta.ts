@@ -2,7 +2,7 @@ import type { ItemMeta } from "../../types";
 
 export const meta: ItemMeta = {
   title: "퍼널 분석 대시보드",
-  summary: "전환 스코어보드 → 단계 전환율 추이 → 세그먼트별 퍼널 → 경로 생키 순서로 이탈 지점을 좁혀 가는 화면.",
+  summary: "전환 스코어보드 → 단계 전환율 추이 → 세그먼트별 퍼널 → 생키 다이어그램 순서로 이탈 지점을 좁혀 가는 화면.",
   category: "blocks",
   blockGroup: "dashboard",
   order: 5,

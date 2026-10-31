@@ -1,13 +1,13 @@
 import type { ItemMeta } from "../../types";
 
 export const meta: ItemMeta = {
-  title: "경로 생키",
-  summary: "세션이 화면에서 화면으로 넘어가는 흐름을 열별 노드와 띠 두께로 보여주는 생키 차트.",
+  title: "생키 다이어그램",
+  summary: "세션이 화면에서 화면으로 넘어가는 흐름을 열별 노드와 띠 두께로 보여주는 생키 다이어그램.",
   category: "components",
   group: "data",
   order: 4,
   tall: true,
-  tags: ["생키", "저니", "SVG"],
+  tags: ["생키", "Sankey", "저니", "SVG"],
   added: "2026-11-01",
   source: { project: "PlaceWave", url: "https://placewave-analytics.vercel.app" },
   rules: {

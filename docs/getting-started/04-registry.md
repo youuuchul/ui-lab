@@ -44,7 +44,7 @@ JSON은 배포할 때 `registry/` 폴더에서 다시 만든다. 손으로 고�
 | [은하수 글로브](#/components/galaxy-globe)                     | 컴포넌트 | 모션                     | `/r/galaxy-globe.json`          |
 | [KPI 스코어보드](#/components/kpi-scoreboard)                  | 컴포넌트 | 데이터                   | `/r/kpi-scoreboard.json`        |
 | [로딩 오버레이](#/components/loading-overlay)                  | 컴포넌트 | 오버레이                 | `/r/loading-overlay.json`       |
-| [경로 생키](#/components/path-sankey)                          | 컴포넌트 | 데이터                   | `/r/path-sankey.json`           |
+| [생키 다이어그램](#/components/path-sankey)                    | 컴포넌트 | 데이터                   | `/r/path-sankey.json`           |
 | [인물 선택 목록](#/components/portrait-choice)                 | 컴포넌트 | 입력                     | `/r/portrait-choice.json`       |
 | [마스크 텍스트 등장](#/components/rise-text)                   | 컴포넌트 | 모션                     | `/r/rise-text.json`             |
 | [세그먼트 컨트롤](#/components/segmented-control)              | 컴포넌트 | 입력                     | `/r/segmented-control.json`     |
