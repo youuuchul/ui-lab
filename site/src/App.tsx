@@ -91,7 +91,7 @@ export function App() {
 /* ---------- 레이아웃 ---------- */
 
 function Sidebar({ current }: { current?: string }) {
-  const link = (href: string, label: string, active: boolean) => (
+  const link = (href: string, label: string, active: boolean, alias?: string) => (
     <a
       key={href}
       href={href}
@@ -99,6 +99,7 @@ function Sidebar({ current }: { current?: string }) {
       className={`flex min-h-10 items-center rounded-lg px-3 ${active ? "bg-fg/10 text-fg" : "text-muted hover:text-fg"}`}
     >
       {label}
+      {alias && <span className="ml-1.5 text-xs text-muted/70">{alias}</span>}
     </a>
   );
   const section = (title: string, children: ReactNode) => (
@@ -125,7 +126,7 @@ function Sidebar({ current }: { current?: string }) {
               {g.label}
             </p>
             <div role="group" aria-label={g.label} className="ml-3 border-l border-line pl-1.5">
-              {g.items.map((c) => link(`#/${c.id}`, c.meta.title, current === c.id))}
+              {g.items.map((c) => link(`#/${c.id}`, c.meta.title, current === c.id, c.meta.alias))}
             </div>
           </div>
         )),
@@ -157,7 +158,7 @@ function DocsLayout({ current, toc, children }: { current?: string; toc: { id: s
   );
 }
 
-function PageHead({ crumbs, title, summary }: { crumbs?: { href: string; label: string }[]; title: string; summary?: string }) {
+function PageHead({ crumbs, title, alias, summary }: { crumbs?: { href: string; label: string }[]; title: string; alias?: string; summary?: string }) {
   return (
     <header className="mb-10">
       {crumbs && (
@@ -173,6 +174,7 @@ function PageHead({ crumbs, title, summary }: { crumbs?: { href: string; label: 
         </nav>
       )}
       <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
+      {alias && <p className="mt-2 text-sm font-medium text-muted">{alias}</p>}
       {summary && <p className="mt-3 text-lg leading-relaxed text-muted">{summary}</p>}
     </header>
   );
@@ -239,7 +241,9 @@ function Card({ item, height }: { item: Item; height: string }) {
       <footer className="flex items-center gap-1 border-t border-line px-5 py-3">
         <a href={`#/${item.id}`} className="mr-auto min-w-0">
           <span className="block truncate text-[15px] font-medium hover:underline">{item.meta.title}</span>
-          {item.meta.source && <span className="block truncate text-xs text-muted">{item.meta.source.project}</span>}
+          {(item.meta.alias || item.meta.source) && (
+            <span className="block truncate text-xs text-muted">{[item.meta.alias, item.meta.source?.project].filter(Boolean).join(" · ")}</span>
+          )}
         </a>
         <IconButton label="다시 재생" onClick={() => setRun((r) => r + 1)}>
           {icons.replay}
@@ -346,7 +350,7 @@ function PlanView({ item }: { item: Item }) {
   const toc = headingsOf(body);
   return (
     <DocsLayout current={item.id} toc={toc}>
-      <PageHead crumbs={crumbsOf(item)} title={item.meta.title} summary={item.meta.summary} />
+      <PageHead crumbs={crumbsOf(item)} title={item.meta.title} alias={item.meta.alias} summary={item.meta.summary} />
       <SourceLine item={item} />
       <ViewSwitch item={item} view="plan" />
       <Markdown body={body} />
@@ -387,7 +391,7 @@ function DevView({ item }: { item: Item }) {
 
   return (
     <DocsLayout current={item.id} toc={toc}>
-      <PageHead crumbs={crumbsOf(item)} title={meta.title} summary={meta.summary} />
+      <PageHead crumbs={crumbsOf(item)} title={meta.title} alias={meta.alias} summary={meta.summary} />
       <SourceLine item={item} />
       <ViewSwitch item={item} view="dev" />
 

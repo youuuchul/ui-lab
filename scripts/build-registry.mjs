@@ -95,7 +95,7 @@ writeFileSync(
   ),
 );
 
-const line = (i) => `- [${i.item.title}](${SITE}/#/${i.category}/${i.slug}): ${i.item.description} 설치: ${SITE}/r/${i.slug}.json`;
+const line = (i) => `- [${i.item.title}${field(i.meta, "alias") ? ` (${field(i.meta, "alias")})` : ""}](${SITE}/#/${i.category}/${i.slug}): ${i.item.description} 설치: ${SITE}/r/${i.slug}.json`;
 const llms = [
   "# youuuchul's UI Lab",
   "",

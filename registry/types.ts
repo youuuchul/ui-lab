@@ -25,6 +25,8 @@ export const BLOCK_GROUPS: { key: BlockGroup; label: string }[] = [
 
 export interface ItemMeta {
   title: string;
+  /** 현업에서 이 쓰임을 부르는 이름 (예: 생키 다이어그램 → 저니 플로우). 제목 아래 보조로 표시 */
+  alias?: string;
   /** 상세 상단 한 줄 설명 */
   summary: string;
   category: Category;

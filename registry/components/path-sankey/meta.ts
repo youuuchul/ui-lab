@@ -2,6 +2,7 @@ import type { ItemMeta } from "../../types";
 
 export const meta: ItemMeta = {
   title: "생키 다이어그램",
+  alias: "저니 플로우",
   summary: "세션이 화면에서 화면으로 넘어가는 흐름을 열별 노드와 띠 두께로 보여주는 생키 다이어그램.",
   category: "components",
   group: "data",
