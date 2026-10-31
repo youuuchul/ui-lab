@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+dist/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+registry/index.gen.ts
+.env
+.env.*

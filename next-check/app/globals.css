@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "../../registry/tokens.css";
+@source "../../registry";
+
+html { background: var(--color-bg); color: var(--color-fg); font-family: var(--font-sans); }
