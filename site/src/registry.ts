@@ -19,7 +19,7 @@ export interface Item {
   meta: ItemMeta;
   Demo: ComponentType;
   readme: string;
-  /** 기획 문서 (기능 명세, 적용 사례는 PRD 요약 포함) */
+  /** 기획 문서 (기능 명세, 블록은 PRD 요약 포함) */
   spec: string;
   source: { file: string; code: string }[];
 }
@@ -60,7 +60,7 @@ export const usedBy = (id: string) => blocks.filter((b) => b.meta.uses?.includes
 
 export const groupLabel = (g?: Group) => GROUPS.find((x) => x.key === g)?.label ?? "";
 
-export const categoryLabel: Record<Category, string> = { blocks: "적용 사례", components: "컴포넌트" };
+export const categoryLabel: Record<Category, string> = { blocks: "블록", components: "컴포넌트" };
 
 const SECTIONS: Record<string, string> = { "getting-started": "시작하기", pm: "기획", elements: "요소" };
 

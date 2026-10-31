@@ -8,6 +8,6 @@ export const meta: ItemMeta = {
   order: 1,
   tags: ["이미지", "캐릭터"],
   added: "2026-10-31",
-  source: {"project": "HeartTable AI", "url": "https://heart-table-ai.vercel.app"},
+  source: {"project": "HeartTable AI", "url": "https://hearttable.shop"},
   rules: {"do": ["캐릭터 표정·상품 색상처럼 같은 틀에서 이미지만 바뀌는 곳에 쓴다.", "변형은 4~6장 안으로 묶는다. 처음에 모두 받는다."], "dont": ["수십 장 갤러리에 쓰지 않는다. 처음 로드가 무거워진다.", "크기가 다른 이미지를 섞지 않는다. 겹칠 때 어긋난다."]},
 };

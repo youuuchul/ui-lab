@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { BLOCK_GROUPS } from "../../registry/types";
 import {
   blocks,
   byGroup,
@@ -15,7 +16,7 @@ import {
 import { CopyButton, IconButton, Icon, Markdown, Preview, SITE, Toc, headingsOf, icons, scrollToId } from "./ui";
 
 const NAV = [
-  { key: "blocks", label: "적용 사례" },
+  { key: "blocks", label: "블록" },
   { key: "components", label: "컴포넌트" },
   { key: "docs", label: "문서" },
 ] as const;
@@ -38,6 +39,8 @@ function useRoute() {
 
 export function App() {
   const [section = "blocks", slug] = useRoute();
+  /** 상세 페이지는 문서 탭 소속 */
+  const tab = slug && section !== "docs" ? "docs" : section;
   useEffect(() => {
     const item = slug && section !== "docs" ? find(`${section}/${slug}`) : undefined;
     const doc = section === "docs" ? docs.find((d) => d.slug === slug) ?? docs[0] : undefined;
@@ -58,8 +61,8 @@ export function App() {
               <a
                 key={n.key}
                 href={`#/${n.key}`}
-                aria-current={section === n.key ? "page" : undefined}
-                className={`flex min-h-10 min-w-10 items-center justify-center border-b-2 whitespace-nowrap ${section === n.key ? "border-fg text-fg" : "border-transparent text-muted hover:text-fg"}`}
+                aria-current={tab === n.key ? "page" : undefined}
+                className={`flex min-h-10 min-w-10 items-center justify-center border-b-2 whitespace-nowrap ${tab === n.key ? "border-fg text-fg" : "border-transparent text-muted hover:text-fg"}`}
               >
                 {n.label}
               </a>
@@ -112,7 +115,7 @@ function Sidebar({ current }: { current?: string }) {
     <div className="flex flex-col gap-5 text-sm">
       {docSection("시작하기")}
       {docSection("기획")}
-      {section("적용 사례", blocks.map((b) => link(`#/${b.id}`, b.meta.title, current === b.id)))}
+      {section("블록", blocks.map((b) => link(`#/${b.id}`, b.meta.title, current === b.id)))}
       {docSection("요소")}
       {section(
         "컴포넌트",
@@ -181,15 +184,15 @@ const H2 = ({ id, children }: { id: string; children: ReactNode }) => (
   </h2>
 );
 
-/* ---------- 적용 사례 갤러리 ---------- */
+/* ---------- 블록 갤러리 ---------- */
 
 function BlockGallery() {
-  const projects = useMemo(() => [...new Set(blocks.map((b) => b.meta.source?.project).filter((p): p is string => !!p))], []);
-  const [project, setProject] = useState<string | null>(null);
-  const shown = project ? blocks.filter((b) => b.meta.source?.project === project) : blocks;
+  const options = useMemo(() => BLOCK_GROUPS.filter((g) => blocks.some((b) => b.meta.blockGroup === g.key)), []);
+  const [group, setGroup] = useState<string | null>(null);
+  const shown = group ? blocks.filter((b) => b.meta.blockGroup === group) : blocks;
   return (
     <div className="py-8">
-      <Chips options={projects} value={project} onChange={setProject} />
+      <Chips label="블록 분류" options={options} value={group} onChange={setGroup} />
       <div className="grid gap-5 lg:grid-cols-2">
         {shown.map((b) => (
           <Card key={b.id} item={b} height="h-[34rem]" />
@@ -199,19 +202,29 @@ function BlockGallery() {
   );
 }
 
-function Chips({ options, value, onChange }: { options: string[]; value: string | null; onChange: (v: string | null) => void }) {
+function Chips({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { key: string; label: string }[];
+  value: string | null;
+  onChange: (v: string | null) => void;
+}) {
   return (
-    <div role="radiogroup" aria-label="출처 프로젝트" className="mb-6 flex flex-wrap gap-2">
-      {[null, ...options].map((o) => (
+    <div role="radiogroup" aria-label={label} className="mb-6 flex flex-wrap gap-2">
+      {[{ key: null, label: "전체" }, ...options].map((o) => (
         <button
-          key={o ?? "all"}
+          key={o.key ?? "all"}
           type="button"
           role="radio"
-          aria-checked={value === o}
-          onClick={() => onChange(o)}
-          className={`min-h-10 rounded-full px-4 text-sm ${value === o ? "bg-fg text-bg" : "bg-surface text-muted hover:text-fg"}`}
+          aria-checked={value === o.key}
+          onClick={() => onChange(o.key)}
+          className={`min-h-10 rounded-full px-4 text-sm ${value === o.key ? "bg-fg text-bg" : "bg-surface text-muted hover:text-fg"}`}
         >
-          {o ?? "전체"}
+          {o.label}
         </button>
       ))}
     </div>
@@ -248,20 +261,17 @@ function Card({ item, height }: { item: Item; height: string }) {
 /* ---------- 컴포넌트 목록 ---------- */
 
 function ComponentIndex() {
+  const [group, setGroup] = useState<string | null>(null);
+  const shown = group ? components.filter((c) => c.meta.group === group) : components;
   return (
-    <DocsLayout current="components" toc={byGroup.map((g) => ({ id: g.key, text: g.label }))}>
-      <PageHead title="컴포넌트" summary={`${components.length}개 · 기본 UI와 프로젝트에서 만든 도메인 컴포넌트`} />
-      {byGroup.map((g) => (
-        <section key={g.key}>
-          <H2 id={g.key}>{g.label}</H2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {g.items.map((c) => (
-              <Card key={c.id} item={c} height="h-64" />
-            ))}
-          </div>
-        </section>
-      ))}
-    </DocsLayout>
+    <div className="py-8">
+      <Chips label="컴포넌트 분류" options={byGroup} value={group} onChange={setGroup} />
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {shown.map((c) => (
+          <Card key={c.id} item={c} height="h-72" />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -371,7 +381,7 @@ function DevView({ item }: { item: Item }) {
     ...headingsOf(body),
     { id: "install", text: "설치" },
     { id: "code", text: "코드" },
-    ...(related.length ? [{ id: "related", text: isBlock ? "구성 컴포넌트" : "적용 사례" }] : []),
+    ...(related.length ? [{ id: "related", text: isBlock ? "구성 컴포넌트" : "블록" }] : []),
   ];
   const current = item.source[file] ?? item.source[0];
 
@@ -442,7 +452,7 @@ function DevView({ item }: { item: Item }) {
 
       {related.length > 0 && (
         <>
-          <H2 id="related">{isBlock ? "구성 컴포넌트" : "적용 사례"}</H2>
+          <H2 id="related">{isBlock ? "구성 컴포넌트" : "블록"}</H2>
           <ul className="grid gap-3 sm:grid-cols-2">
             {related.map((r) => (
               <li key={r.id}>

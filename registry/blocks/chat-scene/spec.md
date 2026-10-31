@@ -16,7 +16,7 @@
 - 첫 발화율: 첫 `round_message_sent` / `round_started` (docs/requirements/analytics-kpi-strategy.md, Character Health)
 - 평균 유저 발화: `round_message_sent` / `round_started` (같은 문서)
 - 추천 질문 사용률: `suggestion_used` / `round_started` (docs/requirements/analytics-funnel.md)
-- 북극성(원본 서비스 기준): 유효 소개팅 완료 세션. 이 적용 사례는 한 라운드만 다뤄 직접 재지 않는다. (analytics-kpi-strategy.md)
+- 북극성(원본 서비스 기준): 유효 소개팅 완료 세션. 이 블록은 한 라운드만 다뤄 직접 재지 않는다. (analytics-kpi-strategy.md)
 
 ### 해결 방향
 - 전체 화면 캐릭터 이미지 위에 말풍선·타이머·입력창을 겹친다.
@@ -88,7 +88,7 @@
 - `suggestion_opened` { round_number, character_id, suggestions_count }, `suggestion_used` { round_number, character_id, suggestion_index, suggestion_text }: 추천 패널. (analytics-funnel.md)
 - `round_time_expired` { round_number, total_rounds, character_id }: 남은 시간 0. (analytics-funnel.md)
 - `chat_reply_failed` { round_number, character_id } (가정): `reply` 실패 때. 원본 이벤트 카탈로그에 없다.
-- `round_restarted` { round_number } (가정): 다시 시작. 이 적용 사례에만 있는 동작이다.
+- `round_restarted` { round_number } (가정): 다시 시작. 이 블록에만 있는 동작이다.
 
 ## 구성 컴포넌트
 - [크로스페이드 이미지 스택](#/components/crossfade-image-stack)

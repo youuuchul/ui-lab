@@ -17,14 +17,14 @@ npx shadcn@latest add https://youuuchul.github.io/ui-lab/r/tokens.json
 @import "./styles/ui-lab-tokens.css";
 ```
 
-## 2. 컴포넌트·적용 사례
-상세 페이지의 **설치** 칸에 있는 명령어를 쓴다. 적용 사례를 받으면 쓰인 컴포넌트와 토큰이 함께 설치된다.
+## 2. 컴포넌트·블록
+상세 페이지의 **설치** 칸에 있는 명령어를 쓴다. 블록을 받으면 쓰인 컴포넌트와 토큰이 함께 설치된다.
 
 ```bash
 npx shadcn@latest add https://youuuchul.github.io/ui-lab/r/chat-scene.json
 ```
 
-파일은 `components/ui-lab/<blocks|components>/<이름>/`에 들어간다. 적용 사례는 `../../components/...` 상대 경로로 컴포넌트를 불러오므로 이 구조를 유지한다.
+파일은 `components/ui-lab/<blocks|components>/<이름>/`에 들어간다. 블록은 `../../components/...` 상대 경로로 컴포넌트를 불러오므로 이 구조를 유지한다.
 
 ## 직접 복사
 1. 상세 페이지 **코드** 칸의 파일을 모두 같은 폴더에 둔다.
@@ -34,4 +34,4 @@ npx shadcn@latest add https://youuuchul.github.io/ui-lab/r/chat-scene.json
 ## Next에서 쓸 때
 - 상호작용이 있는 파일은 첫 줄이 `"use client"`라 서버 컴포넌트에서 바로 import해도 된다.
 - 링크·이미지는 `a`·`img`로 되어 있다. `next/link`·`next/image`가 필요하면 쓰는 쪽에서 감싼다.
-- 적용 사례 데모의 이미지 경로(`/ui-lab/assets/...`)는 갤러리용이다. 자기 에셋 경로로 바꾼다.
+- 블록 데모의 이미지 경로(`/ui-lab/assets/...`)는 갤러리용이다. 자기 에셋 경로로 바꾼다.

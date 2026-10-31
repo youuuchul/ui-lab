@@ -99,11 +99,11 @@ const line = (i) => `- [${i.item.title}](${SITE}/#/${i.category}/${i.slug}): ${i
 const llms = [
   "# youuuchul's UI Lab",
   "",
-  "> React + TypeScript + Tailwind 4 컴포넌트와 적용 사례 모음. Vite·Next 공용. shadcn 레지스트리 형식으로 설치한다.",
+  "> React + TypeScript + Tailwind 4 컴포넌트와 블록 모음. Vite·Next 공용. shadcn 레지스트리 형식으로 설치한다.",
   "",
   `설치: \`npx shadcn@latest add ${SITE}/r/<name>.json\` — 토큰(${SITE}/r/tokens.json)이 함께 설치된다. 전역 CSS에서 \`@import "tailwindcss";\` 다음 줄에 \`@import "./styles/ui-lab-tokens.css";\`를 넣는다.`,
   "",
-  "## 적용 사례",
+  "## 블록",
   ...items.filter((i) => i.category === "blocks").map(line),
   "",
   ...Object.entries(GROUPS).flatMap(([k, label]) => {
@@ -147,7 +147,7 @@ if (existsSync(regDoc)) {
     "sep",
     ...items.map((i) => [
       `[${i.item.title}](#/${i.category}/${i.slug})`,
-      i.category === "blocks" ? "적용 사례" : "컴포넌트",
+      i.category === "blocks" ? "블록" : "컴포넌트",
       i.category === "blocks" ? i.source ?? "" : GROUPS[i.group] ?? "",
       `\`/r/${i.slug}.json\``,
     ]),
@@ -163,7 +163,7 @@ const catalog = alignTable([
   "sep",
   ...items.map((i) => [
     `[${i.item.title}](registry/${i.category}/${i.slug})`,
-    i.category === "blocks" ? "적용 사례" : "컴포넌트",
+    i.category === "blocks" ? "블록" : "컴포넌트",
     i.category === "blocks" ? "" : GROUPS[i.group] ?? "",
     i.source ?? "",
   ]),
