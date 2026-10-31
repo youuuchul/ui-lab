@@ -5,12 +5,28 @@
 html { background: var(--color-bg); color: var(--color-fg); font-family: var(--font-sans); }
 body { margin: 0; word-break: keep-all; }
 
-.doc h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 1rem; }
-.doc h2 { font-size: 1.15rem; font-weight: 600; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-line); }
-.doc p, .doc li { color: color-mix(in srgb, var(--color-fg) 80%, transparent); line-height: 1.75; }
-.doc ul { padding-left: 1.25rem; list-style: disc; }
-.doc table { border-collapse: collapse; width: 100%; font-size: 0.875rem; }
-.doc th, .doc td { border-bottom: 1px solid var(--color-line); padding: 0.5rem; text-align: left; }
-.doc code { font-family: var(--font-mono); font-size: 0.85em; }
-.doc pre { background: var(--color-surface); border-radius: 0.75rem; padding: 1rem; overflow-x: auto; }
-.doc a { text-decoration: underline; }
+.doc { line-height: 1.75; }
+.doc h2 { font-size: 1.25rem; font-weight: 600; margin: 3.5rem 0 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-line); scroll-margin-top: 6rem; }
+.doc h3 { font-size: 1.05rem; font-weight: 600; margin: 2rem 0 0.75rem; scroll-margin-top: 6rem; }
+.doc > :first-child { margin-top: 0; }
+.doc p, .doc li { color: color-mix(in srgb, var(--color-fg) 82%, transparent); }
+.doc p { margin: 0.75rem 0; }
+.doc ul, .doc ol { padding-left: 1.25rem; margin: 0.75rem 0; }
+.doc ul { list-style: disc; }
+.doc ol { list-style: decimal; }
+.doc li { margin: 0.25rem 0; }
+.doc strong { color: var(--color-fg); }
+.doc table { display: block; overflow-x: auto; border-collapse: collapse; width: 100%; font-size: 0.875rem; margin: 1rem 0; }
+.doc th, .doc td { border-bottom: 1px solid var(--color-line); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+.doc th { color: var(--color-fg); font-weight: 600; white-space: nowrap; }
+.doc :not(pre) > code { font-family: var(--font-mono); font-size: 0.85em; background: color-mix(in srgb, var(--color-fg) 8%, transparent); padding: 0.1em 0.35em; border-radius: 0.3rem; }
+.doc a { text-decoration: underline; text-underline-offset: 3px; }
+.doc a:hover { color: var(--color-fg); }
+.doc blockquote { border-left: 2px solid var(--color-accent); padding-left: 1rem; color: var(--color-muted); }
+.doc .code-block { margin: 1rem 0; border: 1px solid var(--color-line); border-radius: 0.875rem; background: var(--color-surface); overflow: hidden; }
+.doc .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0.6rem 0.4rem 1rem; border-bottom: 1px solid var(--color-line); font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-muted); }
+.doc .code-head button { border-radius: 0.4rem; padding: 0.2rem 0.6rem; font-size: 0.75rem; }
+.doc .code-head button:hover { background: color-mix(in srgb, var(--color-fg) 10%, transparent); color: var(--color-fg); }
+.doc pre { margin: 0; padding: 1rem; overflow-x: auto; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; }
+.doc .code-block.wrap pre { white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere; }
+.doc .swatch { display: inline-block; width: 1.1rem; height: 1.1rem; border-radius: 0.3rem; vertical-align: -0.2rem; margin-right: 0.5rem; border: 1px solid var(--color-line); }

@@ -3,13 +3,13 @@
 캐릭터 표정처럼 자주 바뀌는 이미지를 깜빡임 없이 바꾸는 겹침 스택.
 
 ## Props
-| 이름 | 타입 | 기본값 | 설명 |
-|---|---|---|---|
-| `images` | `Record<string, string>` | - | 키 → URL |
-| `activeKey` | `string` | - | 보여줄 키 |
-| `fallbackKey` | `string` | - | `activeKey`가 없을 때 쓸 키 |
-| `alt` | `string` | - | 보이는 이미지의 대체 텍스트 |
-| `className` | `string` | `""` | 크기·모서리. 루트가 `relative`라 위치(`absolute` 등)는 감싸는 요소에 준다 |
+| 이름          | 타입                     | 기본값 | 설명                                                                      |
+|---------------|--------------------------|--------|---------------------------------------------------------------------------|
+| `images`      | `Record<string, string>` | -      | 키 → URL                                                                  |
+| `activeKey`   | `string`                 | -      | 보여줄 키                                                                 |
+| `fallbackKey` | `string`                 | -      | `activeKey`가 없을 때 쓸 키                                               |
+| `alt`         | `string`                 | -      | 보이는 이미지의 대체 텍스트                                               |
+| `className`   | `string`                 | `""`   | 크기·모서리. 루트가 `relative`라 위치(`absolute` 등)는 감싸는 요소에 준다 |
 
 ## 구현 메모
 - 모든 이미지를 처음부터 겹쳐 마운트하고 `opacity`만 바꾼다. 바꿀 때마다 새로 받거나 디코드하지 않아 전환이 바로 일어난다.

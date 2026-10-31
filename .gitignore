@@ -7,3 +7,6 @@ next-env.d.ts
 registry/index.gen.ts
 .env
 .env.*
+site/public/r/
+site/public/llms.txt
+site/public/llms-full.txt

@@ -1,12 +1,14 @@
 # 작성 규칙
+새 항목을 추가하거나 비공개 프로젝트에서 옮길 때 지키는 기준.
 
 ## 폴더
 ```
 registry/<components|blocks>/<kebab-name>/
   <PascalName>.tsx   컴포넌트 본체 (갤러리 '코드 복사' 대상)
+  *.ts               보조 파일 (함께 설치됨)
   demo.tsx           갤러리 미리보기. default export
-  meta.ts            제목·분류·태그·추가일·출처
-  README.md          props, 구현 메모
+  meta.ts            제목·한 줄 설명·분류·사용 기준·출처 (registry/types.ts)
+  README.md          # 제목 → 한 줄 설명 → ## Props → ## 구현 메모
 ```
 
 ## Vite·Next 공통으로 동작시키는 규칙
@@ -20,3 +22,9 @@ registry/<components|blocks>/<kebab-name>/
 - 비공개 프로젝트에서 옮길 때는 범용화한다. 브랜드명, 실제 카피, 사용자·회사 데이터, API 연결, 프롬프트는 빼고 더미 데이터로 다시 구성한다.
 - 출처는 `meta.source`에 프로젝트 이름과 공개 링크만 남긴다.
 - `.env`, 키, 토큰은 넣지 않는다.
+
+## 문서 기준
+- 한 줄 설명(`summary`)은 무엇을 하는 부품인지 한 문장으로. README 첫 줄과 같게 둔다.
+- 사용 기준(`rules`)은 Do 2개·Don't 2개. "언제 쓰는지 / 쓰면 안 되는 상황"을 구체적으로 적는다.
+- 적용 사례는 `uses`에 쓴 컴포넌트를 적어 상세 페이지끼리 연결한다.
+- 데모는 실제 쓰임새가 보이는 작은 장면으로. 장식용 가짜 일러스트를 넣지 않는다. 이미지가 필요하면 출처 프로젝트에서 직접 만든 에셋을 `site/public/assets/<프로젝트>/`에 webp로 둔다.

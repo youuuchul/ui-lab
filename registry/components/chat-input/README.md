@@ -3,17 +3,17 @@
 추천 답변, 감싸기 버튼, 자동 높이를 갖춘 채팅 입력창.
 
 ## Props
-| 이름 | 타입 | 기본값 | 설명 |
-|---|---|---|---|
-| `onSend` | `(content: string) => void` | - | 앞뒤 공백을 제거한 내용 |
-| `disabled` | `boolean` | `false` | 응답 생성 중 등 |
-| `placeholder` | `string` | `"메시지 입력"` | |
-| `suggestions` | `string[]` | - | 없으면 `?` 버튼을 숨김 |
-| `suggestionsLoading` | `boolean` | `false` | 패널에 `loadingLabel` 표시 |
-| `onSuggestionUsed` | `(s, index) => void` | - | 추천을 고른 순간 (분석 이벤트용) |
-| `hintDelayMs` | `number` | `8000` | 빈 입력으로 이 시간이 지나면 `?` 버튼 강조 |
-| `wrap` | `{ marker, placeholder, label }` | - | 선택 글자를 marker로 감싸는 버튼 |
-| `maxHeight` | `number` | `120` | 자동 높이 상한(px, 약 5줄) |
+| 이름                 | 타입                             | 기본값          | 설명                                       |
+|----------------------|----------------------------------|-----------------|--------------------------------------------|
+| `onSend`             | `(content: string) => void`      | -               | 앞뒤 공백을 제거한 내용                    |
+| `disabled`           | `boolean`                        | `false`         | 응답 생성 중 등                            |
+| `placeholder`        | `string`                         | `"메시지 입력"` |                                            |
+| `suggestions`        | `string[]`                       | -               | 없으면 `?` 버튼을 숨김                     |
+| `suggestionsLoading` | `boolean`                        | `false`         | 패널에 `loadingLabel` 표시                 |
+| `onSuggestionUsed`   | `(s, index) => void`             | -               | 추천을 고른 순간 (분석 이벤트용)           |
+| `hintDelayMs`        | `number`                         | `8000`          | 빈 입력으로 이 시간이 지나면 `?` 버튼 강조 |
+| `wrap`               | `{ marker, placeholder, label }` | -               | 선택 글자를 marker로 감싸는 버튼           |
+| `maxHeight`          | `number`                         | `120`           | 자동 높이 상한(px, 약 5줄)                 |
 
 ## 동작
 - 데스크톱(`pointer: fine`)은 Enter 전송, Shift+Enter 줄바꿈. 터치 기기는 Enter가 줄바꿈이다.

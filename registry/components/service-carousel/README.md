@@ -3,19 +3,19 @@
 항목을 원 둘레에 세워 두고 가운데가 선택이 되는 캐러셀. 양옆 항목은 비스듬히 돌아 무대 끝에 걸쳐 보인다. 끝이 없이 돈다.
 
 ## Props
-| 이름 | 타입 | 기본값 | 설명 |
-|---|---|---|---|
-| `items` | `T[]` | - | 항목 |
-| `getKey` | `(item) => string` | - | key |
-| `renderItem` | `(item, active) => ReactNode` | - | 항목 내용. 크기는 캐러셀이 정함 |
-| `onOpen` | `(item) => void` | - | 가운데 항목 클릭·Enter·Space |
-| `onChange` | `(index) => void` | - | 가운데 항목이 바뀔 때 |
-| `ratio` | `number` | `1.5` | 항목 높이 / 폭 |
-| `maxItemWidth` | `number` | `260` | 항목 폭 상한(px). 무대 높이 84%·폭 62%도 함께 제한 |
-| `autoplay` | `number` | `5000` | 자동 넘김 간격(ms), `0`이면 끔 |
-| `pointerLabel` | `string` | - | 가운데 항목 위에서 커서 대신 따라다니는 라벨 (`onOpen`이 있을 때만) |
-| `label` | `string` | `"목록"` | 접근성 라벨 |
-| `className` | `string` | `""` | 바깥 크기 지정 (높이 필수) |
+| 이름           | 타입                          | 기본값   | 설명                                                                |
+|----------------|-------------------------------|----------|---------------------------------------------------------------------|
+| `items`        | `T[]`                         | -        | 항목                                                                |
+| `getKey`       | `(item) => string`            | -        | key                                                                 |
+| `renderItem`   | `(item, active) => ReactNode` | -        | 항목 내용. 크기는 캐러셀이 정함                                     |
+| `onOpen`       | `(item) => void`              | -        | 가운데 항목 클릭·Enter·Space                                        |
+| `onChange`     | `(index) => void`             | -        | 가운데 항목이 바뀔 때                                               |
+| `ratio`        | `number`                      | `1.5`    | 항목 높이 / 폭                                                      |
+| `maxItemWidth` | `number`                      | `260`    | 항목 폭 상한(px). 무대 높이 84%·폭 62%도 함께 제한                  |
+| `autoplay`     | `number`                      | `5000`   | 자동 넘김 간격(ms), `0`이면 끔                                      |
+| `pointerLabel` | `string`                      | -        | 가운데 항목 위에서 커서 대신 따라다니는 라벨 (`onOpen`이 있을 때만) |
+| `label`        | `string`                      | `"목록"` | 접근성 라벨                                                         |
+| `className`    | `string`                      | `""`     | 바깥 크기 지정 (높이 필수)                                          |
 
 ## 조작
 - 끌기: 가로로 8px 넘게 움직여야 끌기로 본다. 세로가 먼저면 페이지 스크롤에 양보한다. 놓을 때 34px 넘게 움직였거나 빠르게 튕기면 1칸(아주 빠르면 2칸) 넘긴다.

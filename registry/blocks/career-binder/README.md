@@ -3,12 +3,12 @@
 그룹 탭과 자동으로 넘어가는 사례 배너, 누르면 뜨는 장표 팝업을 묶은 블록. 경력·프로젝트 사례처럼 "묶음 → 사례 → 상세" 3단 구조에 쓴다.
 
 ## Props
-| 이름 | 타입 | 기본값 | 설명 |
-|---|---|---|---|
-| `groups` | `{ id; name; period? }[]` | - | 탭. 고른 탭만 이름 옆에 `period`가 펼쳐짐 |
-| `pages` | `BinderPage[]` | - | 배너. 순서대로 돌며, 그룹은 `groupId`로 연결 |
-| `autoplay` | `number` | `5000` | 자동 넘김 간격(ms), `0`이면 끔 |
-| `pointerLabel` | `string` | `"상세 보기"` | 가운데 배너 위에서 커서 대신 따라다니는 라벨 |
+| 이름           | 타입                      | 기본값        | 설명                                         |
+|----------------|---------------------------|---------------|----------------------------------------------|
+| `groups`       | `{ id; name; period? }[]` | -             | 탭. 고른 탭만 이름 옆에 `period`가 펼쳐짐    |
+| `pages`        | `BinderPage[]`            | -             | 배너. 순서대로 돌며, 그룹은 `groupId`로 연결 |
+| `autoplay`     | `number`                  | `5000`        | 자동 넘김 간격(ms), `0`이면 끔               |
+| `pointerLabel` | `string`                  | `"상세 보기"` | 가운데 배너 위에서 커서 대신 따라다니는 라벨 |
 
 `BinderPage`: `{ id, groupId, title, when?, lead: { value, label }, preview?, detail }`. `preview`는 배너 오른쪽 그림, `detail`은 팝업 내용.
 

@@ -3,12 +3,12 @@
 캐릭터와 제한 시간 안에 대화하는 라운드 화면. HeartTable AI의 게임 화면에서 데이터·API를 뺀 조합이다.
 
 ## 조합
-| 자리 | 컴포넌트 |
-|---|---|
-| 배경 캐릭터, 답에 따라 표정 전환 | [크로스페이드 이미지 스택](#/item/components/crossfade-image-stack) |
-| 좌상단 라운드 타이머 | [원형 카운트다운](#/item/components/countdown-ring) |
-| 대화 기록, 오래된 메시지는 흐리게 | [흐려지는 채팅 말풍선](#/item/components/chat-bubble) |
-| 하단 입력, 추천 답변, `*행동*` | [채팅 입력창](#/item/components/chat-input) |
+| 자리                              | 컴포넌트                                                            |
+|-----------------------------------|---------------------------------------------------------------------|
+| 배경 캐릭터, 답에 따라 표정 전환  | [크로스페이드 이미지 스택](#/item/components/crossfade-image-stack) |
+| 좌상단 라운드 타이머              | [원형 카운트다운](#/item/components/countdown-ring)                 |
+| 대화 기록, 오래된 메시지는 흐리게 | [흐려지는 채팅 말풍선](#/item/components/chat-bubble)               |
+| 하단 입력, 추천 답변, `*행동*`    | [채팅 입력창](#/item/components/chat-input)                         |
 
 ## 흐름
 1. 보내면 내 메시지와 빈 상대 말풍선(`...`)을 먼저 붙이고, 입력창을 잠근다.

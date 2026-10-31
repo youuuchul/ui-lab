@@ -3,19 +3,19 @@
 프로젝트·역량·영역을 노드로 잇는 3D 힘 그래프를 첫 화면 배경으로 깔고 제목을 겹치는 블록. d3-force-3d로 배치하고 Canvas 2D에 원근 투영해 그린다 (WebGL 없음).
 
 ## 파일
-| 파일 | 역할 |
-|---|---|
-| `ForceGraphHero.tsx` | React 래퍼. 무대 + 제목 오버레이(`children`) |
-| `graph.ts` | 엔진 `ForceGraph`: 시뮬레이션·투영·그리기·조작 |
-| `d3-force-3d.d.ts` | d3-force-3d 타입 선언 (패키지에 타입이 없음) |
+| 파일                 | 역할                                           |
+|----------------------|------------------------------------------------|
+| `ForceGraphHero.tsx` | React 래퍼. 무대 + 제목 오버레이(`children`)   |
+| `graph.ts`           | 엔진 `ForceGraph`: 시뮬레이션·투영·그리기·조작 |
+| `d3-force-3d.d.ts`   | d3-force-3d 타입 선언 (패키지에 타입이 없음)   |
 
 ## Props
-| 이름 | 타입 | 기본값 | 설명 |
-|---|---|---|---|
-| `data` | `GraphInput` | - | `{ nodes: { id, label, color, big? }[], links: { source, target }[], order? }` |
-| `children` | `ReactNode` | - | 그래프 위 제목 영역 (포인터는 그래프로 통과) |
-| `entry` | `"settle" \| "timelapse"` | `"settle"` | 진입 연출 |
-| `ink` / `halo` | `string` | `#f2f2f2` / `#1b1b1b` | 선·라벨 색 / 라벨 테두리(바탕색) |
+| 이름           | 타입                      | 기본값                | 설명                                                                           |
+|----------------|---------------------------|-----------------------|--------------------------------------------------------------------------------|
+| `data`         | `GraphInput`              | -                     | `{ nodes: { id, label, color, big? }[], links: { source, target }[], order? }` |
+| `children`     | `ReactNode`               | -                     | 그래프 위 제목 영역 (포인터는 그래프로 통과)                                   |
+| `entry`        | `"settle" \| "timelapse"` | `"settle"`            | 진입 연출                                                                      |
+| `ink` / `halo` | `string`                  | `#f2f2f2` / `#1b1b1b` | 선·라벨 색 / 라벨 테두리(바탕색)                                               |
 
 `color`는 `#rrggbb`만 받는다 (음영 계산). `data`는 컴포넌트 밖 상수나 `useMemo`로 고정한다 (바뀌면 그래프를 새로 만든다).
 
