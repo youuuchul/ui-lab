@@ -15,6 +15,11 @@ import {
 } from "./registry";
 import { CopyButton, IconButton, Icon, Markdown, Preview, SITE, Toc, headingsOf, icons, scrollToId } from "./ui";
 
+const LINKS = [
+  { href: "https://youuuchul.github.io/", label: "포트폴리오" },
+  { href: "https://github.com/youuuchul/ui-lab", label: "GitHub" },
+];
+
 const NAV = [
   { key: "blocks", label: "블록" },
   { key: "components", label: "컴포넌트" },
@@ -51,12 +56,12 @@ export function App() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-6 px-5 md:gap-10">
+        <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 px-4 sm:gap-6 sm:px-5 md:gap-10">
           <a href="#/" className="flex h-16 shrink-0 items-center gap-1.5 whitespace-nowrap">
-            <span className="text-[15px] font-medium text-muted">youuuchul's</span>
+            <span className="hidden text-[15px] font-medium text-muted min-[480px]:inline">youuuchul's</span>
             <span className="text-lg font-bold tracking-tight">UI Lab</span>
           </a>
-          <nav className="flex h-16 items-stretch gap-5 overflow-x-auto text-[15px] [scrollbar-width:none] [&>a]:h-16">
+          <nav className="flex h-16 min-w-0 items-stretch gap-4 sm:gap-5 overflow-x-auto text-[15px] [scrollbar-width:none] [&>a]:h-16">
             {NAV.map((n) => (
               <a
                 key={n.key}
@@ -68,9 +73,25 @@ export function App() {
               </a>
             ))}
           </nav>
-          <a href="https://github.com/youuuchul/ui-lab" target="_blank" rel="noreferrer" className="ml-auto hidden min-h-10 items-center px-2 text-sm text-muted hover:text-fg sm:flex">
-            GitHub
-          </a>
+          <div className="ml-auto flex shrink-0 items-center gap-1">
+            {LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className="hidden min-h-10 items-center rounded-lg px-3 text-sm text-muted outline-none hover:text-fg focus-visible:ring-2 focus-visible:ring-accent md:flex"
+              >
+                {l.label}
+              </a>
+            ))}
+            <a
+              href="mailto:dbcjf25@gmail.com"
+              className="ml-1 flex min-h-10 items-center rounded-full bg-fg px-4 text-sm font-medium text-bg outline-none transition-transform hover:bg-fg/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg active:scale-[0.96] motion-reduce:transition-none"
+            >
+              문의
+            </a>
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-[1440px] px-5 pb-24">
