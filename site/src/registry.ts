@@ -4,7 +4,7 @@ import type { Category, ItemMeta } from "../../registry/types";
 const metas = import.meta.glob<{ meta: ItemMeta }>("../../registry/*/*/meta.ts", { eager: true });
 const demos = import.meta.glob<{ default: ComponentType }>("../../registry/*/*/demo.tsx", { eager: true });
 const readmes = import.meta.glob<string>("../../registry/*/*/README.md", { eager: true, query: "?raw", import: "default" });
-const sources = import.meta.glob<string>("../../registry/*/*/[A-Z]*.tsx", { eager: true, query: "?raw", import: "default" });
+const sources = import.meta.glob<string>(["../../registry/*/*/*.{ts,tsx}", "!**/demo.tsx", "!**/meta.ts"], { eager: true, query: "?raw", import: "default" });
 const docFiles = import.meta.glob<string>("../../docs/*.md", { eager: true, query: "?raw", import: "default" });
 
 export interface Item {
@@ -28,7 +28,8 @@ export const items: Item[] = Object.entries(metas)
       readme: readmes[`${base}/README.md`] ?? "",
       source: Object.entries(sources)
         .filter(([p]) => p.startsWith(`${base}/`))
-        .map(([p, code]) => ({ file: p.split("/").pop()!, code })),
+        .map(([p, code]) => ({ file: p.split("/").pop()!, code }))
+        .sort((a, b) => Number(/^[a-z]/.test(a.file)) - Number(/^[a-z]/.test(b.file))),
     };
   })
   .sort((a, b) => b.meta.added.localeCompare(a.meta.added));

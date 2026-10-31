@@ -96,7 +96,7 @@ function Detail({ item }: { item?: Item }) {
   if (!item) return <p className="py-20 text-center text-muted">항목을 찾을 수 없음</p>;
   const { Demo } = item;
   return (
-    <div className="grid gap-8">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-8">
       <div className="relative flex h-96 items-center justify-center rounded-card border border-line bg-surface">
         <Demo key={run} />
         <div className="absolute right-4 bottom-4">
