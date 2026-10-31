@@ -6,6 +6,8 @@ export interface SegmentedProgressProps {
   duration?: number;
   onComplete?: () => void;
   className?: string;
+  /** 진행 막대의 접근성 이름 */
+  ariaLabel?: string;
 }
 
 export function SegmentedProgress({
@@ -13,6 +15,7 @@ export function SegmentedProgress({
   duration = 2000,
   onComplete,
   className = "",
+  ariaLabel = "진행률",
 }: SegmentedProgressProps) {
   const [active, setActive] = useState(0);
   const fills = useRef<(HTMLDivElement | null)[]>([]);
@@ -28,6 +31,11 @@ export function SegmentedProgress({
     }
     const el = fills.current[active];
     if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.style.transform = "scaleX(1)";
+      const t = setTimeout(() => setActive((a) => a + 1), duration);
+      return () => clearTimeout(t);
+    }
     const anim = el.animate(
       [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
       { duration, easing: "linear", fill: "forwards" },
@@ -40,6 +48,7 @@ export function SegmentedProgress({
     <div
       className={`flex gap-1.5 ${className}`}
       role="progressbar"
+      aria-label={ariaLabel}
       aria-valuemin={0}
       aria-valuemax={segments}
       aria-valuenow={Math.min(active, segments)}

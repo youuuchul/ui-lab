@@ -7,7 +7,7 @@ export default function Demo() {
   const fit = useFit<HTMLDivElement>(wide);
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className={`rounded-xl border border-line p-4 transition-[width] duration-500 ${wide ? "w-80" : "w-48"}`}>
+      <div className={`rounded-xl border border-line p-4 transition-[width] duration-500 motion-reduce:transition-none ${wide ? "w-80" : "w-48"}`}>
         <div ref={fit} className="font-bold leading-[0.95] tracking-tight text-fg">
           <span data-fit="1" className="block whitespace-nowrap">
             SMALL PARTS
@@ -20,7 +20,7 @@ export default function Demo() {
           </span>
         </div>
       </div>
-      <button onClick={() => setWide((v) => !v)} className="rounded-full bg-fg/10 px-4 py-1.5 text-sm text-fg hover:bg-fg/20">
+      <button onClick={() => setWide((v) => !v)} className="min-h-10 rounded-full bg-fg/10 px-4 py-1.5 text-sm text-fg hover:bg-fg/20">
         {wide ? "좁게" : "넓게"}
       </button>
     </div>

@@ -23,6 +23,6 @@
 - `phone.ts`는 `import()`로 늦게 불러 three.js가 첫 번들에 들어가지 않는다.
 - 폰은 iPhone 15 Pro 비율로 코드에서 만든다 (금속 테두리·유리 앞면·카메라 범프·버튼). 화면은 `emissiveMap`으로 톤 매핑 없이 원색 그대로.
 - `PhoneStage.render(poses)`는 CSS `translate3d`·`rotateX/Y/Z`와 같은 자세를 받는다. 카메라 시야각을 CSS `perspective` 거리에서 계산해 DOM 레이어와 겹쳐도 어긋나지 않는다 (원형 캐러셀과 함께 쓸 때).
-- 기울기는 처음 쥔 각도를 기준점으로 잡고 천천히 따라가 다시 가운데로 돌아온다. 터치 `pointerdown` 안에서만 권한을 요청한다.
+- 기울기는 처음 쥔 각도를 기준점으로 잡고 천천히 따라가 다시 가운데로 돌아온다. iOS 센서 권한은 `pointerdown`이 아니라 `click` 안에서 요청한다. 거부하면 다시 묻지 않고 포인터(마우스) 반응만 유지한다.
 - 원본의 GLB 모델 로더와 설정 파일(`phone.json`)은 뺐다. 모델을 바꾸려면 `buildDefaultPhone`을 GLTFLoader 결과로 교체한다.
 - 의존성: `three`, `motion`.

@@ -53,6 +53,8 @@ export interface GalaxyGlobeRef {
 export interface GalaxyGlobeProps {
   /** 정사각형 한 변(px) */
   size: number;
+  /** 스크린리더용 이름 */
+  ariaLabel?: string;
   /** 가장 앞의 별빛 (내 기록) */
   lights?: Light[];
   /** 이름 있는 별빛 (다른 사람이 공개한 기록) */
@@ -92,6 +94,7 @@ function defaultCard(target: HoverTarget): ReactNode {
 
 export function GalaxyGlobe({
   size,
+  ariaLabel = "별빛 지구본",
   lights = [],
   namedLights = [],
   communityCount = 0,
@@ -286,7 +289,7 @@ export function GalaxyGlobe({
   const rainbow = card !== null && (card.kind === "named" ? card.light.status === "rainbow" : status === "rainbow");
 
   return (
-    <div ref={wrapRef} onPointerDown={onPointerDown} className="relative touch-manipulation" style={{ width: size, height: size }}>
+    <div ref={wrapRef} role="img" aria-label={ariaLabel} onPointerDown={onPointerDown} className="relative touch-manipulation" style={{ width: size, height: size }}>
       <div ref={hostRef} className="absolute inset-0" />
       {body && (
         <div

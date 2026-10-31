@@ -26,7 +26,7 @@ export function IconButton({ label, onClick, children }: { label: string; onClic
       onClick={onClick}
       aria-label={label}
       title={label}
-      className="rounded-lg p-2 text-muted outline-none hover:bg-fg/10 hover:text-fg focus-visible:ring-2 focus-visible:ring-accent"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted outline-none hover:bg-fg/10 hover:text-fg focus-visible:ring-2 focus-visible:ring-accent"
     >
       <Icon>{children}</Icon>
     </button>
@@ -34,21 +34,31 @@ export function IconButton({ label, onClick, children }: { label: string; onClic
 }
 
 export function useCopy() {
-  const [done, setDone] = useState(false);
+  const [state, setState] = useState<"idle" | "done" | "failed">("idle");
   const copy = async (text: string) => {
-    await navigator.clipboard.writeText(text);
-    setDone(true);
-    setTimeout(() => setDone(false), 1500);
+    try {
+      await navigator.clipboard.writeText(text);
+      setState("done");
+    } catch {
+      setState("failed");
+    }
+    setTimeout(() => setState("idle"), 1500);
   };
-  return { done, copy };
+  return { state, copy };
 }
 
 export function CopyButton({ text, label = "코드 복사" }: { text: string; label?: string }) {
-  const { done, copy } = useCopy();
+  const { state, copy } = useCopy();
+  const msg = state === "done" ? "복사됨" : state === "failed" ? "복사하지 못함" : "";
   return (
-    <IconButton label={done ? "복사됨" : label} onClick={() => copy(text)}>
-      {done ? icons.check : icons.copy}
-    </IconButton>
+    <>
+      <IconButton label={msg || label} onClick={() => copy(text)}>
+        {state === "done" ? icons.check : icons.copy}
+      </IconButton>
+      <span role="status" className="sr-only">
+        {msg}
+      </span>
+    </>
   );
 }
 
@@ -138,8 +148,12 @@ export function Markdown({ body }: { body: string }) {
         const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-copy]");
         if (!btn) return;
         const code = btn.closest(".code-block")?.querySelector("code")?.textContent ?? "";
-        await navigator.clipboard.writeText(code);
-        btn.textContent = "복사됨";
+        try {
+          await navigator.clipboard.writeText(code);
+          btn.textContent = "복사됨";
+        } catch {
+          btn.textContent = "복사하지 못함";
+        }
         setTimeout(() => (btn.textContent = "복사"), 1500);
       }}
     />
@@ -147,7 +161,8 @@ export function Markdown({ body }: { body: string }) {
 }
 
 export function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.getElementById(id)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
 }
 
 /** 오른쪽 페이지 목차. 화면에 들어온 섹션을 표시 */
@@ -174,7 +189,7 @@ export function Toc({ items }: { items: { id: string; text: string; depth?: numb
             <button
               type="button"
               onClick={() => scrollToId(i.id)}
-              className={`-ml-px border-l py-1 text-left ${i.depth === 3 ? "pl-6" : "pl-4"} ${active === i.id ? "border-fg text-fg" : "border-transparent text-muted hover:text-fg"}`}
+              className={`-ml-px min-h-10 border-l py-2 text-left ${i.depth === 3 ? "pl-6" : "pl-4"} ${active === i.id ? "border-fg text-fg" : "border-transparent text-muted hover:text-fg"}`}
             >
               {i.text}
             </button>

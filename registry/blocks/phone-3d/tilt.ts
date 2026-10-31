@@ -19,14 +19,20 @@ function onOrientation(e: DeviceOrientationEvent) {
 
 type PermissionApi = { requestPermission?: () => Promise<"granted" | "denied"> };
 
-/** 터치 기기에서 사용자 조작(탭) 안에서 호출한다. iOS는 이때 권한을 묻는다. */
+let denied = false;
+
+/** 터치 기기에서 사용자 조작(click) 안에서 호출한다. iOS는 이때 권한을 묻는다. 한 번 거부되면 다시 묻지 않는다. */
 export async function enableDeviceTilt() {
-  if (deviceTilt.on || typeof window === "undefined" || !("DeviceOrientationEvent" in window)) return;
+  if (deviceTilt.on || denied || typeof window === "undefined" || !("DeviceOrientationEvent" in window)) return;
   const api = DeviceOrientationEvent as unknown as PermissionApi;
   if (typeof api.requestPermission === "function") {
     try {
-      if ((await api.requestPermission()) !== "granted") return;
+      if ((await api.requestPermission()) !== "granted") {
+        denied = true;
+        return;
+      }
     } catch {
+      denied = true;
       return;
     }
   }

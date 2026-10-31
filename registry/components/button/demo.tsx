@@ -11,6 +11,7 @@ const Plus = (
 export default function Demo() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [confirming, setConfirming] = useState(false);
   const publish = () => {
     setSaving(true);
     setTimeout(() => {
@@ -23,7 +24,14 @@ export default function Demo() {
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm" variant="secondary" leadingIcon={Plus}>태그 추가</Button>
         <Button size="sm" variant="ghost">미리보기</Button>
-        <Button size="sm" variant="danger">삭제</Button>
+        {confirming ? (
+          <>
+            <Button size="sm" variant="danger" onClick={() => setConfirming(false)}>정말 삭제</Button>
+            <Button size="sm" variant="secondary" onClick={() => setConfirming(false)}>취소</Button>
+          </>
+        ) : (
+          <Button size="sm" variant="danger" onClick={() => setConfirming(true)}>삭제</Button>
+        )}
       </div>
       <div className="rounded-card border border-line bg-bg p-4">
         <p className="text-sm text-fg/80">{saved ? "게시했어요" : "작성 중인 글 1개"}</p>

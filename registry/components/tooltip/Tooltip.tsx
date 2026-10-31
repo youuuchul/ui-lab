@@ -50,9 +50,9 @@ export function Tooltip({ content, children, side = "top", delay = 300 }: Toolti
       <span
         id={id}
         role="tooltip"
-        className={`pointer-events-none absolute left-1/2 z-50 w-max max-w-56 -translate-x-1/2 rounded-lg bg-fg px-2.5 py-1.5 text-xs font-medium text-bg shadow-lg shadow-black/30 transition-[opacity,translate] duration-150 motion-reduce:transition-none ${
+        className={`pointer-events-none absolute left-1/2 z-50 w-max max-w-56 -translate-x-1/2 rounded-lg border border-line bg-fg px-2.5 py-1.5 text-xs font-medium text-bg shadow-lg shadow-black/30 transition-[opacity,translate] motion-reduce:transition-none ${
           side === "top" ? "bottom-full mb-2" : "top-full mt-2"
-        } ${open ? "translate-y-0 opacity-100" : `${side === "top" ? "translate-y-1" : "-translate-y-1"} invisible opacity-0`}`}
+        } ${open ? "translate-y-0 opacity-100 duration-150" : `duration-100 ${side === "top" ? "translate-y-1" : "-translate-y-1"} invisible opacity-0`}`}
       >
         {content}
       </span>

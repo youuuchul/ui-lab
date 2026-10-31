@@ -10,7 +10,7 @@
 | `defaultValue` | `T`                  | 첫 선택지 | 비제어 모드 초기값                  |
 | `onChange`     | `(value: T) => void` | -         | 값이 바뀔 때만 호출                 |
 | `label`        | `string`             | -         | 그룹의 접근성 이름 (화면에 안 보임) |
-| `size`         | `"sm" \| "md"`       | `"md"`    | 높이 28 / 36px                      |
+| `size`         | `"sm" \| "md"`       | `"md"`    | 높이 28(터치 40) / 40px             |
 | `disabled`     | `boolean`            | `false`   |                                     |
 
 ## 접근성

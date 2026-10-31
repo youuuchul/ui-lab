@@ -6,6 +6,7 @@
 | 이름                    | 타입                    | 기본값          | 설명                                                             |
 |-------------------------|-------------------------|-----------------|------------------------------------------------------------------|
 | `size`                  | `number`                | -               | 정사각형 한 변(px)                                               |
+| `ariaLabel`             | `string`                | `"별빛 지구본"` | 캔버스 영역의 접근성 이름 (`role="img"`)                         |
 | `lights`                | `Light[]`               | `[]`            | 가장 앞의 별빛. `lightFromMemory({ id, mood })`로 만든다         |
 | `namedLights`           | `NamedLight[]`          | `[]`            | 이름 있는 별빛. `namedLightFromId({ id, status, info })`         |
 | `communityCount`        | `number`                | `0`             | 은하수 밀도층 개수 (0 ~ 수십만)                                  |

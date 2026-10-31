@@ -59,6 +59,7 @@ export function PetGlobeIntro({ background, lines, title, tagline, primaryLabel,
   const [ready, setReady] = useState(false);
   const [lit, setLit] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [manual, setManual] = useState(false);
   const last = scene === lines.length - 1;
 
   useLayoutEffect(() => {
@@ -72,12 +73,12 @@ export function PetGlobeIntro({ background, lines, title, tagline, primaryLabel,
     return () => ro.disconnect();
   }, []);
 
-  // 자동 진행. 탭·스와이프·점으로 앞질러 갈 수 있다
+  // 자동 진행. 탭·스와이프·점·방향키로 직접 고르면 멈추고, 동작 줄이기에서는 쓰지 않는다
   useEffect(() => {
-    if (!ready || last) return;
+    if (!ready || last || manual || reduced) return;
     const t = setTimeout(() => setScene((s) => Math.min(lines.length - 1, s + 1)), SCENE_MS);
     return () => clearTimeout(t);
-  }, [ready, scene, last, lines.length]);
+  }, [ready, scene, last, manual, reduced, lines.length]);
 
   // 장면 1: 별빛 하나가 날아와 켜진다. 뒤로 돌아오면 이미 켜져 있다
   useEffect(() => {
@@ -99,8 +100,12 @@ export function PetGlobeIntro({ background, lines, title, tagline, primaryLabel,
     );
   }, [scene, reduced]);
 
-  const next = useCallback(() => setScene((s) => Math.min(lines.length - 1, s + 1)), [lines.length]);
-  const prev = useCallback(() => setScene((s) => Math.max(0, s - 1)), []);
+  const go = useCallback((to: (s: number) => number) => {
+    setManual(true);
+    setScene(to);
+  }, []);
+  const next = useCallback(() => go((s) => Math.min(lines.length - 1, s + 1)), [go, lines.length]);
+  const prev = useCallback(() => go((s) => Math.max(0, s - 1)), [go]);
 
   const onUp = (e: PointerEvent<HTMLDivElement>) => {
     const start = dragRef.current;
@@ -124,12 +129,14 @@ export function PetGlobeIntro({ background, lines, title, tagline, primaryLabel,
   return (
     <div
       ref={rootRef}
+      role="group"
+      aria-label={`${title} 소개`}
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "ArrowRight") next();
         else if (e.key === "ArrowLeft") prev();
       }}
-      className="relative w-full overflow-hidden outline-none select-none"
+      className="relative w-full overflow-hidden select-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#F2C879]"
       style={{ background: `linear-gradient(180deg, ${SKY}, ${SKY} 40%, ${SILL})` }}
     >
       <div
@@ -172,18 +179,20 @@ export function PetGlobeIntro({ background, lines, title, tagline, primaryLabel,
         </div>
       </div>
       <div className="relative -mt-[14%] flex flex-col items-center gap-2 bg-gradient-to-b from-transparent via-[#0a0916]/50 to-[#0a0916]/60 px-5 pt-6 pb-5">
-        <p ref={lineRef} key={scene} className="min-h-6 text-center font-serif text-[15px] text-[#E7E3F4] [text-shadow:0_2px_14px_rgb(8_7_20/0.7)]">
-          {lines[scene]}
-        </p>
-        <div className="flex">
+        <div aria-live="polite" className="w-full">
+          <p ref={lineRef} key={scene} className="min-h-6 text-center font-serif text-[15px] text-[#E7E3F4] [text-shadow:0_2px_14px_rgb(8_7_20/0.7)]">
+            {lines[scene]}
+          </p>
+        </div>
+        <div className="-my-1 flex">
           {lines.map((l, i) => (
             <button
               key={l}
               type="button"
               aria-label={`장면 ${i + 1}`}
               aria-current={i === scene ? "true" : undefined}
-              onClick={() => setScene(i)}
-              className="flex h-5 w-5 items-center justify-center"
+              onClick={() => go(() => i)}
+              className="flex h-10 w-10 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#F2C879]"
             >
               <span className="h-[5px] w-[5px] rounded-full transition-colors duration-300" style={{ background: i === scene ? "#F2C879" : "rgba(183,179,218,0.35)" }} />
             </button>
@@ -192,19 +201,22 @@ export function PetGlobeIntro({ background, lines, title, tagline, primaryLabel,
         <button
           type="button"
           onClick={onPrimary}
-          className="mt-1 h-12 w-full max-w-80 rounded-2xl border border-[#F2C879]/30 bg-[#F4EFE6] text-[15px] font-semibold text-[#2B2A4C] shadow-[0_10px_30px_rgb(20_19_43/0.55),0_0_24px_rgb(143_134_214/0.22)]"
+          className="mt-1 h-12 w-full max-w-80 rounded-2xl border border-[#F2C879]/30 bg-[#F4EFE6] text-[15px] font-semibold text-[#2B2A4C] shadow-[0_10px_30px_rgb(20_19_43/0.55),0_0_24px_rgb(143_134_214/0.22)] transition-transform active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C879]"
         >
           {primaryLabel}
         </button>
         {/* 장면이 바뀌어도 높이 고정. 버튼이 튀지 않게 */}
-        <button
-          type="button"
-          onClick={() => setScene(lines.length - 1)}
-          disabled={last}
-          className={`h-5 text-[13px] leading-5 text-[#A7A2D4] ${last ? "font-serif" : ""}`}
-        >
-          {last ? "언제나, 가장 빛나는 곳에" : "건너뛰기"}
-        </button>
+        {last ? (
+          <p className="flex h-10 items-center font-serif text-[13px] text-white/80">언제나, 가장 빛나는 곳에</p>
+        ) : (
+          <button
+            type="button"
+            onClick={() => go(() => lines.length - 1)}
+            className="h-10 rounded-lg px-4 text-[13px] text-white/80 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-[#F2C879]"
+          >
+            건너뛰기
+          </button>
+        )}
       </div>
     </div>
   );

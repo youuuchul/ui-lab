@@ -22,13 +22,13 @@ JSON은 배포할 때 `registry/` 폴더에서 다시 만든다. 손으로 고�
 <!-- items:start -->
 | 이름                                                           | 종류      | 분류                     | 레지스트리 주소                 |
 |----------------------------------------------------------------|-----------|--------------------------|---------------------------------|
-| [사례 바인더](#/blocks/career-binder)                          | 적용 사례 | portfolio-site           | `/r/career-binder.json`         |
+| [사례 바인더](#/blocks/career-binder)                          | 적용 사례 | 웹 포트폴리오            | `/r/career-binder.json`         |
 | [캐릭터 대화 화면](#/blocks/chat-scene)                        | 적용 사례 | HeartTable AI            | `/r/chat-scene.json`            |
-| [3D 역량 그래프 히어로](#/blocks/force-graph-hero)             | 적용 사례 | portfolio-site           | `/r/force-graph-hero.json`      |
+| [3D 역량 그래프 히어로](#/blocks/force-graph-hero)             | 적용 사례 | 웹 포트폴리오            | `/r/force-graph-hero.json`      |
 | [추리 게임 플레이 화면](#/blocks/murder-mystery-play)          | 적용 사례 | Murder Mystery Generator | `/r/murder-mystery-play.json`   |
 | [PetGlobe 첫 화면](#/blocks/petglobe-home)                     | 적용 사례 | PetGlobe                 | `/r/petglobe-home.json`         |
-| [3D 폰 목업](#/blocks/phone-3d)                                | 적용 사례 | portfolio-site           | `/r/phone-3d.json`              |
-| [견적 안내 시트](#/blocks/quote-sheet)                         | 적용 사례 | portfolio-site           | `/r/quote-sheet.json`           |
+| [3D 폰 목업](#/blocks/phone-3d)                                | 적용 사례 | 웹 포트폴리오            | `/r/phone-3d.json`              |
+| [견적 안내 시트](#/blocks/quote-sheet)                         | 적용 사례 | 웹 포트폴리오            | `/r/quote-sheet.json`           |
 | [아코디언](#/components/accordion)                             | 컴포넌트  | 탐색                     | `/r/accordion.json`             |
 | [배지](#/components/badge)                                     | 컴포넌트  | 상태                     | `/r/badge.json`                 |
 | [버튼](#/components/button)                                    | 컴포넌트  | 입력                     | `/r/button.json`                |

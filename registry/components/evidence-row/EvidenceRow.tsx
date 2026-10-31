@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 export interface EvidenceRowProps {
   title: string;
@@ -11,15 +12,16 @@ export interface EvidenceRowProps {
 }
 
 export function EvidenceRow({ title, image, meta, description, onClick }: EvidenceRowProps) {
+  const [failed, setFailed] = useState(false);
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center gap-3.5 rounded-md border border-line p-3.5 text-left transition-colors hover:bg-line/40"
+      className="flex w-full items-center gap-3.5 rounded-[18px] border border-line p-2.5 text-left transition-colors hover:bg-line/40"
     >
-      {image ? (
+      {image && !failed ? (
         <span className="relative block h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-black/40 outline-1 -outline-offset-1 outline-white/10">
-          <img src={image} alt="" className="h-full w-full object-contain" loading="lazy" decoding="async" />
+          <img src={image} alt="" onError={() => setFailed(true)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
         </span>
       ) : (
         <span className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-line text-lg font-bold text-muted">

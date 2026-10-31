@@ -37,7 +37,12 @@ const perspective = (h: number) => Math.max(1200, h * 2.2);
 type Drag = { id: number; x: number; y: number; T0: number; lastX: number; lastT: number; v: number; moved: boolean };
 
 /** 원형으로 도는 3D 캐러셀: 가운데가 선택, 양옆은 비스듬히 돌아 무대 끝에 걸친다. */
-export function ServiceCarousel<T>({
+/** 항목이 없으면 아무것도 그리지 않는다 (위치 계산이 항목 수로 나눈다) */
+export function ServiceCarousel<T>(props: ServiceCarouselProps<T>) {
+  return props.items.length ? <CarouselStage {...props} /> : null;
+}
+
+function CarouselStage<T>({
   items,
   getKey,
   renderItem,
@@ -71,6 +76,7 @@ export function ServiceCarousel<T>({
   const [active, setActive] = useState(0);
   const activeRef = useRef(0);
   const [hover, setHover] = useState(false);
+  const [kbdFocus, setKbdFocus] = useState(false);
   const [seen, setSeen] = useState(false);
   const [nudge, setNudge] = useState(0);
   const cb = useRef({ onOpen, onChange, items });
@@ -156,17 +162,15 @@ export function ServiceCarousel<T>({
     return () => io.disconnect();
   }, []);
 
-  // 자동 넘김: 마우스를 올렸거나 화면 밖·모션 줄이기면 멈춘다. 끄는 중이거나 키보드 포커스면 한 번 미룬다.
+  // 자동 넘김: 마우스를 올렸거나 키보드 포커스가 안에 있거나 화면 밖·모션 줄이기면 멈춘다. 끄는 중이면 한 번 미룬다.
   useEffect(() => {
-    if (!autoplay || reduce || hover || !seen) return;
+    if (!autoplay || reduce || hover || kbdFocus || !seen) return;
     const id = window.setTimeout(() => {
-      const f = document.activeElement;
-      const kbd = f instanceof HTMLElement && !!stage.current?.contains(f) && f.matches(":focus-visible");
-      if (st.current.drag || kbd) setNudge((v) => v + 1);
+      if (st.current.drag) setNudge((v) => v + 1);
       else step(1);
     }, autoplay);
     return () => clearTimeout(id);
-  }, [active, autoplay, reduce, hover, seen, nudge, step]);
+  }, [active, autoplay, reduce, hover, kbdFocus, seen, nudge, step]);
 
   // 가로 휠(트랙패드 좌우)도 한 칸씩
   useEffect(() => {
@@ -351,6 +355,10 @@ export function ServiceCarousel<T>({
       className={`relative ${className}`}
       onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
       onPointerLeave={(e) => e.pointerType === "mouse" && setHover(false)}
+      onFocus={(e) => e.target.matches(":focus-visible") && setKbdFocus(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setKbdFocus(false);
+      }}
     >
       <div
         ref={stage}

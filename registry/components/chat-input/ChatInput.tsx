@@ -53,6 +53,7 @@ export function ChatInput({
   // 입력 가능해지는 순간(시작·응답 끝) 강조 카운트를 시작하고, 비활성·패널 열림이면 끈다.
   // input은 onChange에서 직접 처리하므로 의존성에서 뺀다.
   useEffect(() => {
+    if (disabled) setOpen(false);
     if (disabled || open) cancelHint();
     else if (!input.trim()) armHint();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,6 +97,7 @@ export function ChatInput({
     setInput("");
     setOpen(false);
     cancelHint();
+    armHint();
   };
 
   // 데스크톱은 Enter 전송·Shift+Enter 줄바꿈, 터치 기기는 Enter 줄바꿈. IME 조합 중 Enter는 확정용이라 무시.
@@ -119,7 +121,7 @@ export function ChatInput({
     else replace(next, start + m.length, start + m.length + wrap.placeholder.length);
   };
 
-  const round = "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all disabled:opacity-50";
+  const round = "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-[background-color,color,transform,opacity] active:scale-[0.96] disabled:opacity-50 motion-reduce:transition-none";
 
   return (
     <div ref={rootRef} className="relative">
@@ -136,7 +138,7 @@ export function ChatInput({
                   onSuggestionUsed?.(s, i);
                   replace(s, s.length, s.length);
                 }}
-                className="rounded-xl border border-white/10 bg-surface/95 px-3 py-2 text-left text-sm text-white/85 shadow-lg shadow-black/40 hover:bg-line"
+                className="min-h-10 rounded-xl border border-white/10 bg-surface/95 px-3 py-2 text-left text-sm text-white/85 shadow-lg shadow-black/40 hover:bg-line"
               >
                 {s}
               </button>
@@ -163,7 +165,7 @@ export function ChatInput({
             aria-label="추천 답변"
             aria-expanded={open}
             title="추천 답변"
-            className={`${round} ${hint && !open ? "animate-pulse bg-accent/30 text-white ring-2 ring-accent/60" : "bg-white/10 text-white/60 hover:bg-white/20"}`}
+            className={`${round} ${hint && !open ? "motion-safe:animate-pulse bg-accent/30 text-white ring-2 ring-accent/60" : "bg-white/10 text-white/60 hover:bg-white/20"}`}
           >
             ?
           </button>
@@ -185,14 +187,14 @@ export function ChatInput({
             if (!input.trim() && !disabled && !open) armHint();
           }}
           onBlur={cancelHint}
-          className="min-w-0 flex-1 resize-none rounded-2xl bg-white/10 px-4 py-2.5 text-sm leading-5 text-white outline-none backdrop-blur-md placeholder:text-white/40 focus:bg-white/15 disabled:opacity-50"
+          className="min-w-0 flex-1 resize-none rounded-2xl bg-white/10 px-4 py-2.5 text-sm leading-5 text-white outline-none backdrop-blur-md placeholder:text-white/40 focus:bg-white/15 focus-visible:ring-1 focus-visible:ring-white/40 disabled:opacity-50"
         />
         {wrap && (
-          <button type="button" onClick={onWrap} disabled={disabled} aria-label={wrap.label} title={wrap.label} className={`${round} bg-white/10 text-white/70 hover:bg-white/20 active:scale-90`}>
+          <button type="button" onClick={onWrap} disabled={disabled} aria-label={wrap.label} title={wrap.label} className={`${round} bg-white/10 text-white/70 hover:bg-white/20`}>
             <span className="translate-y-[1.5px] text-xl leading-none">{wrap.marker}</span>
           </button>
         )}
-        <button type="submit" disabled={disabled || !input.trim()} aria-label="보내기" className={`${round} bg-accent text-white active:scale-90`}>
+        <button type="submit" disabled={disabled || !input.trim()} aria-label="보내기" className={`${round} bg-accent text-white`}>
           <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
           </svg>

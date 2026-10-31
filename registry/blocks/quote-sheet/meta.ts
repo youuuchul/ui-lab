@@ -7,5 +7,5 @@ export const meta: ItemMeta = {
   order: 7,
   tags: ["문의", "문서형"],
   added: "2026-10-31",
-  source: {"project": "portfolio-site"},
+  source: { project: "웹 포트폴리오", url: "https://youuuchul.github.io/" },
 };

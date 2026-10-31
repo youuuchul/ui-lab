@@ -1,5 +1,5 @@
 "use client";
-import { useId, useState, type InputHTMLAttributes, type ReactNode } from "react";
+import { useId, useRef, useState, type InputHTMLAttributes, type ReactNode } from "react";
 
 export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange" | "size"> {
   label: string;
@@ -33,6 +33,7 @@ export function TextField({
 }: TextFieldProps) {
   const auto = useId();
   const id = idProp ?? auto;
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inner, setInner] = useState(defaultValue);
   const text = value ?? inner;
   const message = error ?? helperText;
@@ -44,11 +45,18 @@ export function TextField({
         {label}
       </label>
       <div
-        className={`flex h-11 items-center gap-2 rounded-xl border bg-fg/5 px-3.5 transition-colors focus-within:bg-fg/[0.07] motion-reduce:transition-none ${
+        onMouseDown={(e) => {
+          if (e.target === e.currentTarget && !disabled) {
+            e.preventDefault();
+            inputRef.current?.focus();
+          }
+        }}
+        className={`flex h-11 items-center gap-2 rounded-xl border bg-fg/5 px-3.5 transition-colors focus-within:bg-fg/[0.07] focus-within:ring-2 focus-within:ring-accent/40 motion-reduce:transition-none ${
           error ? "border-red-400/80" : "border-line focus-within:border-accent"
         }`}
       >
         <input
+          ref={inputRef}
           id={id}
           value={text}
           maxLength={maxLength}
@@ -64,18 +72,16 @@ export function TextField({
         />
         {trailing}
       </div>
-      {(message || hasCount) && (
-        <div className="flex justify-between gap-3 text-xs">
-          <span id={`${id}-msg`} className={error ? "text-red-300" : "text-muted"} aria-live={error ? "polite" : undefined}>
-            {message}
+      <div className="flex min-h-4 justify-between gap-3 text-xs">
+        <span id={`${id}-msg`} className={error ? "text-red-300" : "text-muted"} aria-live="polite">
+          {message}
+        </span>
+        {hasCount && (
+          <span id={`${id}-count`} className="shrink-0 font-mono text-muted tabular-nums">
+            {text.length}/{maxLength}
           </span>
-          {hasCount && (
-            <span id={`${id}-count`} className="shrink-0 font-mono text-muted tabular-nums">
-              {text.length}/{maxLength}
-            </span>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+"use client";
 import { Quote } from "./Quote";
 
 export default function Demo() {
@@ -28,8 +29,12 @@ export default function Demo() {
           { k: "인계", v: "결과물·문서 전달" },
         ]}
         footer={
-          <a href="#/" className="rounded-full bg-fg px-5 py-3 text-bg">
-            사례 보기 →
+          <a
+            href="#quote-contact"
+            onClick={(e) => e.preventDefault()}
+            className="rounded-full bg-fg px-5 py-3 text-bg transition-[transform,opacity] hover:opacity-85 active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            문의하기 →
           </a>
         }
       />

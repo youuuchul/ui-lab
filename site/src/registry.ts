@@ -9,6 +9,7 @@ const sources = import.meta.glob<string>(["../../registry/*/*/*.{ts,tsx}", "!**/
   query: "?raw",
   import: "default",
 });
+const specs = import.meta.glob<string>("../../registry/*/*/spec.md", { eager: true, query: "?raw", import: "default" });
 const docFiles = import.meta.glob<string>("../../docs/*/*.md", { eager: true, query: "?raw", import: "default" });
 
 export interface Item {
@@ -18,6 +19,8 @@ export interface Item {
   meta: ItemMeta;
   Demo: ComponentType;
   readme: string;
+  /** 기획 문서 (기능 명세, 적용 사례는 PRD 요약 포함) */
+  spec: string;
   source: { file: string; code: string }[];
 }
 
@@ -30,6 +33,7 @@ export const items: Item[] = Object.entries(metas).map(([path, mod]) => {
     meta: mod.meta,
     Demo: demos[`${base}/demo.tsx`].default,
     readme: readmes[`${base}/README.md`] ?? "",
+    spec: specs[`${base}/spec.md`] ?? "",
     source: Object.entries(sources)
       .filter(([p]) => p.startsWith(`${base}/`))
       .map(([p, code]) => ({ file: p.split("/").pop()!, code }))
@@ -58,7 +62,7 @@ export const groupLabel = (g?: Group) => GROUPS.find((x) => x.key === g)?.label 
 
 export const categoryLabel: Record<Category, string> = { blocks: "적용 사례", components: "컴포넌트" };
 
-const SECTIONS: Record<string, string> = { "getting-started": "시작하기", elements: "요소" };
+const SECTIONS: Record<string, string> = { "getting-started": "시작하기", elements: "요소", pm: "기획" };
 
 export interface Doc {
   slug: string;

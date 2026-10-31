@@ -21,7 +21,7 @@ const NAV = [
 ] as const;
 
 function useRoute() {
-  const read = () => location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  const read = () => location.hash.replace(/^#\/?/, "").split("?")[0].split("/").filter(Boolean);
   const [route, setRoute] = useState(read);
   useEffect(() => {
     const on = () => {
@@ -49,18 +49,23 @@ export function App() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-6 px-5 md:gap-10">
-          <a href="#/" className="flex shrink-0 items-baseline gap-1.5 whitespace-nowrap">
+          <a href="#/" className="flex h-16 shrink-0 items-center gap-1.5 whitespace-nowrap">
             <span className="text-[15px] font-medium text-muted">youuuchul's</span>
             <span className="text-lg font-bold tracking-tight">UI Lab</span>
           </a>
-          <nav className="flex gap-5 overflow-x-auto text-[15px] [scrollbar-width:none]">
+          <nav className="flex h-16 items-stretch gap-5 overflow-x-auto text-[15px] [scrollbar-width:none] [&>a]:h-16">
             {NAV.map((n) => (
-              <a key={n.key} href={`#/${n.key}`} className={`whitespace-nowrap ${section === n.key ? "text-fg" : "text-muted hover:text-fg"}`}>
+              <a
+                key={n.key}
+                href={`#/${n.key}`}
+                aria-current={section === n.key ? "page" : undefined}
+                className={`flex min-h-10 min-w-10 items-center justify-center border-b-2 whitespace-nowrap ${section === n.key ? "border-fg text-fg" : "border-transparent text-muted hover:text-fg"}`}
+              >
                 {n.label}
               </a>
             ))}
           </nav>
-          <a href="https://github.com/youuuchul/ui-lab" target="_blank" rel="noreferrer" className="ml-auto hidden text-sm text-muted hover:text-fg sm:block">
+          <a href="https://github.com/youuuchul/ui-lab" target="_blank" rel="noreferrer" className="ml-auto hidden min-h-10 items-center px-2 text-sm text-muted hover:text-fg sm:flex">
             GitHub
           </a>
         </div>
@@ -84,7 +89,12 @@ export function App() {
 
 function Sidebar({ current }: { current?: string }) {
   const link = (href: string, label: string, active: boolean) => (
-    <a key={href} href={href} className={`block rounded-lg px-3 py-1.5 ${active ? "bg-fg/10 text-fg" : "text-muted hover:text-fg"}`}>
+    <a
+      key={href}
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={`flex min-h-10 items-center rounded-lg px-3 ${active ? "bg-fg/10 text-fg" : "text-muted hover:text-fg"}`}
+    >
       {label}
     </a>
   );
@@ -113,8 +123,8 @@ function Sidebar({ current }: { current?: string }) {
   );
   return (
     <>
-      <details className="mb-6 rounded-xl border border-line bg-surface px-4 py-3 lg:hidden">
-        <summary className="cursor-pointer text-sm text-muted">전체 목록</summary>
+      <details className="mb-6 rounded-xl border border-line bg-surface px-4 py-1 lg:hidden">
+        <summary className="flex min-h-10 cursor-pointer items-center rounded-md text-sm text-muted outline-none focus-visible:ring-2 focus-visible:ring-accent">전체 목록</summary>
         <div className="mt-4">{body}</div>
       </details>
       <aside className="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto py-8 pr-4 [scrollbar-width:thin] lg:block">{body}</aside>
@@ -140,11 +150,11 @@ function PageHead({ crumbs, title, summary }: { crumbs?: { href: string; label: 
   return (
     <header className="mb-10">
       {crumbs && (
-        <nav aria-label="경로" className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-muted">
+        <nav aria-label="경로" className="mb-2 flex flex-wrap items-center gap-1.5 text-sm text-muted">
           {crumbs.map((c, i) => (
             <span key={c.href + i} className="flex items-center gap-1.5">
               {i > 0 && <span aria-hidden="true">/</span>}
-              <a href={c.href} className="hover:text-fg">
+              <a href={c.href} className="inline-flex min-h-10 min-w-10 items-center justify-center hover:text-fg">
                 {c.label}
               </a>
             </span>
@@ -191,7 +201,7 @@ function Chips({ options, value, onChange }: { options: string[]; value: string 
           role="radio"
           aria-checked={value === o}
           onClick={() => onChange(o)}
-          className={`rounded-full px-4 py-1.5 text-sm ${value === o ? "bg-fg text-bg" : "bg-surface text-muted hover:text-fg"}`}
+          className={`min-h-10 rounded-full px-4 text-sm ${value === o ? "bg-fg text-bg" : "bg-surface text-muted hover:text-fg"}`}
         >
           {o ?? "전체"}
         </button>
@@ -214,7 +224,12 @@ function Card({ item, height }: { item: Item; height: string }) {
           {icons.replay}
         </IconButton>
         <CopyButton text={item.source[0]?.code ?? ""} />
-        <a href={`#/${item.id}`} aria-label="문서" title="문서" className="rounded-lg p-2 text-muted hover:bg-fg/10 hover:text-fg">
+        <a
+          href={`#/${item.id}`}
+          aria-label="문서"
+          title="문서"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted outline-none hover:bg-fg/10 hover:text-fg focus-visible:ring-2 focus-visible:ring-accent"
+        >
           <Icon>{icons.doc}</Icon>
         </a>
       </footer>
@@ -244,11 +259,98 @@ function ComponentIndex() {
 
 /* ---------- 상세 ---------- */
 
+const viewFromHash = (): "dev" | "plan" => (new URLSearchParams(location.hash.split("?")[1]).get("v") === "plan" ? "plan" : "dev");
+
 function Detail({ item }: { item?: Item }) {
+  const [view, setView] = useState(viewFromHash);
+  useEffect(() => {
+    const on = () => setView(viewFromHash());
+    addEventListener("hashchange", on);
+    return () => removeEventListener("hashchange", on);
+  }, []);
+  if (!item) return <p className="py-24 text-center text-muted">항목을 찾을 수 없음</p>;
+  return view === "plan" && item.spec ? <PlanView item={item} /> : <DevView item={item} />;
+}
+
+function ViewSwitch({ item, view }: { item: Item; view: "dev" | "plan" }) {
+  if (!item.spec) return null;
+  const opts = [
+    { key: "dev", label: "개발", href: `#/${item.id}` },
+    { key: "plan", label: "기획", href: `#/${item.id}?v=plan` },
+  ] as const;
+  return (
+    <nav aria-label="문서 보기" className="-mt-4 mb-10 inline-flex rounded-xl border border-line bg-surface p-1">
+      {opts.map((o) => (
+        <a
+          key={o.key}
+          href={o.href}
+          aria-current={view === o.key ? "page" : undefined}
+          className={`flex min-h-10 items-center rounded-lg px-5 text-sm ${view === o.key ? "bg-fg text-bg" : "text-muted hover:text-fg"}`}
+        >
+          {o.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+function crumbsOf(item: Item) {
+  const { meta } = item;
+  const base =
+    meta.category === "blocks"
+      ? [{ href: "#/blocks", label: categoryLabel.blocks }]
+      : [
+          { href: "#/components", label: categoryLabel.components },
+          { href: "#/components", label: groupLabel(meta.group) },
+        ];
+  return [...base, { href: `#/${item.id}`, label: meta.title }];
+}
+
+function SourceLine({ item }: { item: Item }) {
+  const s = item.meta.source;
+  if (!s) return null;
+  return (
+    <p className="-mt-6 mb-8 text-sm text-muted">
+      적용 프로젝트 ·{" "}
+      {s.url ? (
+        <a className="underline hover:text-fg" href={s.url} target="_blank" rel="noreferrer">
+          {s.project}
+        </a>
+      ) : (
+        s.project
+      )}
+    </p>
+  );
+}
+
+function PlanView({ item }: { item: Item }) {
+  const body = readmeBody(item.spec);
+  const toc = headingsOf(body);
+  return (
+    <DocsLayout current={item.id} toc={toc}>
+      <PageHead crumbs={crumbsOf(item)} title={item.meta.title} summary={item.meta.summary} />
+      <SourceLine item={item} />
+      <ViewSwitch item={item} view="plan" />
+      <Markdown body={body} />
+      <p className="mt-12 border-t border-line pt-6 text-sm text-muted">
+        문서 형식: <a href="#/docs/feature-spec" className="underline hover:text-fg">기능 명세서</a>
+        {item.meta.category === "blocks" && (
+          <>
+            {" · "}
+            <a href="#/docs/prd" className="underline hover:text-fg">PRD</a>
+          </>
+        )}
+        {" · "}
+        <a href="#/docs/overview" className="underline hover:text-fg">기획 문서 지도</a>
+      </p>
+    </DocsLayout>
+  );
+}
+
+function DevView({ item }: { item: Item }) {
   const [run, setRun] = useState(0);
   const [file, setFile] = useState(0);
   useEffect(() => setFile(0), [item]);
-  if (!item) return <p className="py-24 text-center text-muted">항목을 찾을 수 없음</p>;
 
   const { meta } = item;
   const isBlock = meta.category === "blocks";
@@ -263,29 +365,13 @@ function Detail({ item }: { item?: Item }) {
     { id: "code", text: "코드" },
     ...(related.length ? [{ id: "related", text: isBlock ? "구성 컴포넌트" : "적용 사례" }] : []),
   ];
-  const crumbs = isBlock
-    ? [{ href: "#/blocks", label: categoryLabel.blocks }]
-    : [
-        { href: "#/components", label: categoryLabel.components },
-        { href: "#/components", label: groupLabel(meta.group) },
-      ];
   const current = item.source[file] ?? item.source[0];
 
   return (
     <DocsLayout current={item.id} toc={toc}>
-      <PageHead crumbs={[...crumbs, { href: `#/${item.id}`, label: meta.title }]} title={meta.title} summary={meta.summary} />
-      {meta.source && (
-        <p className="-mt-6 mb-8 text-sm text-muted">
-          적용 프로젝트 ·{" "}
-          {meta.source.url ? (
-            <a className="underline hover:text-fg" href={meta.source.url} target="_blank" rel="noreferrer">
-              {meta.source.project}
-            </a>
-          ) : (
-            meta.source.project
-          )}
-        </p>
-      )}
+      <PageHead crumbs={crumbsOf(item)} title={meta.title} summary={meta.summary} />
+      <SourceLine item={item} />
+      <ViewSwitch item={item} view="dev" />
 
       <h2 id="preview" className="sr-only">
         미리보기
@@ -325,7 +411,7 @@ function Detail({ item }: { item?: Item }) {
       <H2 id="code">코드</H2>
       <section className="overflow-hidden rounded-card border border-line bg-surface">
         <div className="flex items-center gap-1 border-b border-line pr-2 pl-3">
-          <div role="tablist" aria-label="파일" className="flex min-w-0 flex-1 gap-1 overflow-x-auto py-2 [scrollbar-width:none]">
+          <div role="tablist" aria-label="파일" className="flex min-w-0 flex-1 gap-1 overflow-x-auto py-1 [scrollbar-width:none]">
             {item.source.map((s, i) => (
               <button
                 key={s.file}
@@ -333,7 +419,7 @@ function Detail({ item }: { item?: Item }) {
                 role="tab"
                 aria-selected={i === file}
                 onClick={() => setFile(i)}
-                className={`shrink-0 rounded-md px-2.5 py-1 font-mono text-[13px] ${i === file ? "bg-fg/10 text-fg" : "text-muted hover:text-fg"}`}
+                className={`min-h-10 shrink-0 rounded-md px-3 font-mono text-[13px] ${i === file ? "bg-fg/10 text-fg" : "text-muted hover:text-fg"}`}
               >
                 {s.file}
               </button>

@@ -21,22 +21,27 @@ const NAMED = Array.from({ length: 36 }, (_, i) =>
   }),
 );
 
+const START = 18;
+const MAX_ADDED = 12;
+
 export default function Demo() {
   const ref = useRef<GalaxyGlobeRef>(null);
-  const [count, setCount] = useState(18);
+  const [count, setCount] = useState(START);
   const [status, setStatus] = useState<GlobeStatus>("active");
   const lights = useMemo<Light[]>(
     () => Array.from({ length: count }, (_, i) => lightFromMemory({ id: `demo-${i}`, mood: MOODS[i % MOODS.length] })),
     [count],
   );
 
+  const full = count - START >= MAX_ADDED;
   const add = async () => {
+    if (full) return;
     const next = lightFromMemory({ id: `demo-${count}`, mood: MOODS[count % MOODS.length] });
     await ref.current?.lightUp(next, null);
     setCount((c) => c + 1);
   };
 
-  const btn = "rounded-full bg-fg/10 px-3 py-1.5 text-xs text-fg/80 hover:bg-fg/20";
+  const btn = "min-h-10 rounded-full bg-fg/10 px-4 text-xs text-fg/80 hover:bg-fg/20 disabled:cursor-not-allowed disabled:opacity-40 aria-pressed:bg-fg/25 aria-pressed:text-fg";
   return (
     <div className="flex flex-col items-center gap-3">
       <GalaxyGlobe
@@ -50,10 +55,10 @@ export default function Demo() {
         statusAnimate
       />
       <div className="flex gap-2">
-        <button className={btn} onClick={add}>별빛 켜기</button>
+        <button className={btn} onClick={add} disabled={full}>별빛 켜기</button>
         <button className={btn} onClick={() => ref.current?.gather()}>모으기</button>
-        <button className={btn} onClick={() => setStatus((s) => (s === "active" ? "rainbow" : "active"))}>
-          {status === "active" ? "무지갯빛" : "흰빛"}
+        <button className={btn} aria-pressed={status === "rainbow"} onClick={() => setStatus((s) => (s === "active" ? "rainbow" : "active"))}>
+          무지갯빛
         </button>
       </div>
     </div>

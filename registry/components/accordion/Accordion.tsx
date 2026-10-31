@@ -48,7 +48,7 @@ export function Accordion({ items, type = "single", value, defaultValue = [], on
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
-                  className={`h-4 w-4 shrink-0 text-muted transition-transform duration-300 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}
+                  className={`h-4 w-4 shrink-0 text-muted transition-transform motion-reduce:transition-none ${isOpen ? "rotate-180 duration-300" : "duration-200"}`}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -64,7 +64,7 @@ export function Accordion({ items, type = "single", value, defaultValue = [], on
               role="region"
               aria-labelledby={`${id}-h-${i}`}
               inert={!isOpen}
-              className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none ${
+              className={`grid transition-[grid-template-rows,opacity] ${isOpen ? "duration-300" : "duration-200"} ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none ${
                 isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
               }`}
             >

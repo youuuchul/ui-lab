@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { LayoutGroup, motion, useReducedMotion } from "motion/react";
 
 export interface BinderGroup {
@@ -40,7 +40,12 @@ const dist = (k: number, i: number, n: number) => {
 };
 
 /** 그룹 탭 → 자동으로 넘어가는 사례 배너(양옆이 여백에 걸침) → 누르면 장표 팝업. */
-export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "상세 보기", className = "" }: CareerBinderProps) {
+/** 사례가 없으면 아무것도 그리지 않는다 */
+export function CareerBinder(props: CareerBinderProps) {
+  return props.pages.length ? <Binder {...props} /> : null;
+}
+
+function Binder({ groups, pages, autoplay = 5000, pointerLabel = "상세 보기", className = "" }: CareerBinderProps) {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
   const [open, setOpen] = useState(false);
@@ -48,6 +53,9 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
   const [kbd, setKbd] = useState(false);
   const [seen, setSeen] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [touching, setTouching] = useState(false);
+  const uid = useId();
   const [lay, setLay] = useState({ w: 0, l: 0, r: 0 });
   const tabs = useRef<HTMLDivElement>(null);
   const binder = useRef<HTMLDivElement>(null);
@@ -84,12 +92,12 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
     return () => io.disconnect();
   }, []);
 
-  // 마우스를 올렸거나 키보드로 들어왔거나 끄는 중·팝업 열림·모션 줄이기·화면 밖이면 멈춤
+  // 정지 버튼·마우스 올림·터치 접촉·키보드 포커스·끄는 중·팝업 열림·모션 줄이기·화면 밖이면 멈춤
   useEffect(() => {
-    if (!autoplay || reduce || open || hover || kbd || dragging || !seen) return;
+    if (!autoplay || reduce || paused || open || hover || touching || kbd || dragging || !seen) return;
     const t = setTimeout(() => go(i + 1), autoplay);
     return () => clearTimeout(t);
-  }, [i, autoplay, reduce, open, hover, kbd, dragging, seen, go]);
+  }, [i, autoplay, reduce, paused, open, hover, touching, kbd, dragging, seen, go]);
 
   useEffect(() => {
     const d = dialog.current;
@@ -106,6 +114,19 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
     if (!el || !t) return;
     el.scrollTo({ left: Math.max(0, t.offsetLeft + t.offsetWidth - el.clientWidth), behavior: "smooth" });
   }, [page.groupId]);
+
+  const onTabKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    const edge = e.key === "Home" ? 0 : e.key === "End" ? groups.length - 1 : -1;
+    if (!step && edge < 0) return;
+    e.preventDefault();
+    const cur = groups.findIndex((g) => g.id === page.groupId);
+    const to = edge >= 0 ? edge : (cur + step + groups.length) % groups.length;
+    const k = pages.findIndex((x) => x.groupId === groups[to].id);
+    if (k < 0) return;
+    go(k);
+    tabs.current?.querySelectorAll<HTMLElement>('[role="tab"]')[to]?.focus();
+  };
 
   const place = (d: number) => {
     if (d === 0) return "translateX(var(--dx))";
@@ -131,21 +152,27 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
       <LayoutGroup>
         <div
           ref={tabs}
-          className="relative flex items-start gap-x-8 gap-y-1 overflow-x-auto shadow-[inset_0_-1px_var(--color-line)] [scrollbar-width:none]"
+          onKeyDown={onTabKey}
+          className="relative -ml-3 flex items-start gap-x-2 gap-y-1 overflow-x-auto shadow-[inset_0_-1px_var(--color-line)] [scrollbar-width:none]"
           role="tablist"
           aria-label="그룹"
         >
           {groups.map((g) => {
             const on = g.id === page.groupId;
+            const first = pages.findIndex((x) => x.groupId === g.id);
             return (
               <motion.button
                 layout
                 key={g.id}
                 type="button"
                 role="tab"
+                id={`${uid}-tab-${g.id}`}
                 aria-selected={on}
-                className={`relative flex flex-none items-baseline gap-2.5 pb-3 text-left transition-colors ${on ? "text-fg" : "text-muted hover:text-fg"}`}
-                onClick={() => go(pages.findIndex((x) => x.groupId === g.id))}
+                aria-controls={`${uid}-panel`}
+                tabIndex={on ? 0 : -1}
+                className={`relative flex min-w-10 flex-none items-baseline gap-2.5 px-3 pb-3 text-left transition-colors disabled:opacity-40 ${on ? "text-fg" : "text-muted hover:text-fg"}`}
+                disabled={first < 0}
+                onClick={() => go(first)}
                 transition={{ type: "spring", stiffness: 380, damping: 34 }}
               >
                 <motion.strong layout="position" className="text-lg font-extrabold tracking-[-0.01em] whitespace-nowrap">
@@ -176,9 +203,15 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
 
       <div
         ref={binder}
+        id={`${uid}-panel`}
+        role="tabpanel"
+        aria-labelledby={`${uid}-tab-${page.groupId}`}
+        aria-describedby={`${uid}-hint`}
         className="group/binder @container relative mt-5 outline-none"
         tabIndex={0}
-        aria-label="사례 (좌우 화살표로 넘김, Enter로 크게 보기)"
+        onPointerDown={(e) => e.pointerType !== "mouse" && setTouching(true)}
+        onPointerUp={() => setTouching(false)}
+        onPointerCancel={() => setTouching(false)}
         onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
         onPointerLeave={(e) => {
           if (e.pointerType !== "mouse") return;
@@ -243,7 +276,7 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
               <article
                 key={p.id}
                 data-at={at}
-                className={`relative grid cursor-pointer grid-cols-1 items-stretch gap-x-10 gap-y-5 rounded-2xl border border-line bg-surface px-8 pt-7 pb-16 shadow-[0_18px_40px_-30px_#000c] [grid-area:1/1] sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] ${
+                className={`relative grid cursor-pointer grid-cols-1 items-stretch gap-x-10 gap-y-5 rounded-2xl border border-line bg-surface px-8 pt-7 pb-16 [grid-area:1/1] sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] ${
                   dragging || reduce ? "" : "transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.3,0.7,0.3,1)]"
                 } ${
                   at === "on"
@@ -282,13 +315,13 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
                   className={`absolute right-3.5 bottom-3 flex cursor-default items-center rounded-[9px] bg-fg/60 p-0.5 text-bg ${at === "side" ? "pointer-events-none" : ""}`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <button type="button" aria-label="이전 사례" tabIndex={d === 0 ? 0 : -1} onClick={() => go(i - 1)} className="h-[26px] w-7 rounded-[7px] text-lg leading-none hover:bg-bg/20">
+                  <button type="button" aria-label="이전 사례" tabIndex={d === 0 ? 0 : -1} onClick={() => go(i - 1)} className="relative h-[26px] w-7 rounded-[7px] text-lg leading-none after:absolute after:-inset-x-1.5 after:-inset-y-[7px] hover:bg-bg/20">
                     ‹
                   </button>
-                  <span className="px-1 font-mono text-sm">
+                  <span className="px-1 font-mono text-sm tabular-nums">
                     {k + 1} / {n}
                   </span>
-                  <button type="button" aria-label="다음 사례" tabIndex={d === 0 ? 0 : -1} onClick={() => go(i + 1)} className="h-[26px] w-7 rounded-[7px] text-lg leading-none hover:bg-bg/20">
+                  <button type="button" aria-label="다음 사례" tabIndex={d === 0 ? 0 : -1} onClick={() => go(i + 1)} className="relative h-[26px] w-7 rounded-[7px] text-lg leading-none after:absolute after:-inset-x-1.5 after:-inset-y-[7px] hover:bg-bg/20">
                     ›
                   </button>
                 </div>
@@ -296,6 +329,9 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
             );
           })}
         </div>
+        <span id={`${uid}-hint`} className="sr-only">
+          좌우 화살표로 넘기고 Enter로 크게 봅니다
+        </span>
         <span ref={pointer} className="pointer-events-none absolute top-0 left-0 z-[3]" aria-hidden="true">
           <span className="block -translate-x-1/2 -translate-y-1/2 scale-60 rounded-full bg-fg px-3.5 py-2 text-sm font-bold whitespace-nowrap text-bg opacity-0 transition-[opacity,scale] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] group-data-[hover=open]/binder:scale-100 group-data-[hover=open]/binder:opacity-100">
             {pointerLabel}
@@ -303,7 +339,23 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
         </span>
       </div>
 
-      {/* 장표를 누르거나 바깥·Esc로 닫힘 */}
+      {autoplay > 0 && !reduce && (
+        <div className="mt-2 flex justify-end">
+          <button
+            type="button"
+            aria-label="자동 넘김 정지"
+            aria-pressed={paused}
+            onClick={() => setPaused((p) => !p)}
+            className="flex h-10 w-10 items-center justify-center rounded-full text-muted transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-fg"
+          >
+            <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+              {paused ? <path d="M4 2.5v11l9-5.5z" /> : <path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z" />}
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/* 바깥(배경)·닫기 버튼·Esc로 닫힘. 장표 안쪽을 눌러도 닫히지 않는다 */}
       <dialog
         ref={dialog}
         className="m-auto max-h-[calc(100svh-32px)] w-[min(64rem,calc(100vw-32px))] max-w-none cursor-zoom-out overflow-auto overscroll-contain bg-transparent p-0 text-fg backdrop:bg-black/55 backdrop:backdrop-blur-[6px] focus-visible:outline-none open:animate-[binder-pop_0.28s_cubic-bezier(0.3,0.7,0.3,1)] motion-reduce:open:animate-none"
@@ -313,9 +365,25 @@ export function CareerBinder({ groups, pages, autoplay = 5000, pointerLabel = "�
           // 사파리는 마우스로 연 팝업을 닫으면 포커스 표시가 남아 자동 넘김이 멈춘다 → 포커스를 놓는다
           if (!byKey.current) binder.current?.blur();
         }}
-        onClick={() => setOpen(false)}
+        onClick={(e) => e.target === e.currentTarget && setOpen(false)}
       >
-        {open && <div className="rounded-2xl border border-line bg-surface p-8 shadow-[0_30px_80px_-30px_#000c]">{page.detail}</div>}
+        {open && (
+          <div className="cursor-auto rounded-2xl border border-line bg-surface p-8 shadow-[0_30px_80px_-30px_#000c]">
+            <div className="-mt-4 -mr-4 mb-1 flex justify-end">
+              <button
+                type="button"
+                aria-label="닫기"
+                onClick={() => setOpen(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-muted transition-colors hover:bg-fg/10 hover:text-fg focus-visible:outline-2 focus-visible:outline-fg"
+              >
+                <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+                  <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" />
+                </svg>
+              </button>
+            </div>
+            {page.detail}
+          </div>
+        )}
       </dialog>
       <style>{"@keyframes binder-pop{from{opacity:0;transform:scale(.97)}}"}</style>
     </div>

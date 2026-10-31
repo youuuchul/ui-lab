@@ -9,7 +9,12 @@
 | `message`   | `string`                 | -            | 안내 문구                                    |
 | `timeoutMs` | `number`                 | `60000`      | 시간 초과 기준                               |
 | `onTimeout` | `() => void`             | -            | 시간 초과 시 호출 (재시도·오류 화면 전환 등) |
+| `onCancel`  | `() => void`             | -            | 있으면 취소 버튼 표시                        |
 | `scope`     | `"viewport" \| "parent"` | `"viewport"` | 화면 전체를 덮을지, relative 부모만 덮을지   |
+
+## 접근성
+- 컴포넌트는 덮개만 그린다. 쓰는 쪽에서 덮는 영역(부모)에 `aria-busy="true"`를, 뒤쪽 내용에 `inert`를 걸어 포커스와 읽기가 뒤로 새지 않게 한다.
+- 스피너는 `prefers-reduced-motion`에서 돌지 않는다.
 
 ## 구현 메모
 - 원본은 250ms 간격으로 경과 시간을 확인했다. 여기서는 `setTimeout` 한 번으로 바꿨다.

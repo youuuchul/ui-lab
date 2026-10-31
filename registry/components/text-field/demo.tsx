@@ -5,10 +5,10 @@ import { TextField } from "./TextField";
 const NICK = /^[가-힣a-zA-Z0-9]*$/;
 
 export default function Demo() {
-  const [nick, setNick] = useState("하늘");
+  const [nick, setNick] = useState("하");
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
-  const nickError = !NICK.test(nick) ? "기호와 공백은 쓸 수 없어요" : nick.length > 0 && nick.length < 2 ? "2자 이상 입력해 주세요" : undefined;
+  const nickError = !NICK.test(nick) ? "기호와 공백은 쓸 수 없어요" : nick.length > 0 && nick.length < 2 ? "2~12자로 입력해 주세요" : undefined;
   const emailError = touched && email && !/^\S+@\S+\.\S+$/.test(email) ? "이메일 형식이 아니에요" : undefined;
   return (
     <div className="flex w-80 flex-col gap-4">
@@ -22,6 +22,7 @@ export default function Demo() {
         onBlur={() => setTouched(true)}
         error={emailError}
       />
+      <TextField label="아이디" helperText="가입 후에는 바꿀 수 없어요" defaultValue="yuchul_k" disabled />
     </div>
   );
 }

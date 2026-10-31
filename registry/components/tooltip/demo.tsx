@@ -30,7 +30,7 @@ export default function Demo() {
                 aria-label={t.label}
                 aria-pressed={t.key === "undo" ? undefined : on}
                 onClick={() => t.key !== "undo" && setActive((l) => (on ? l.filter((k) => k !== t.key) : [...l, t.key]))}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg focus-visible:outline-2 focus-visible:outline-accent ${on ? "bg-fg/15 text-fg" : "text-muted hover:bg-fg/10 hover:text-fg"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-lg focus-visible:outline-2 focus-visible:outline-accent ${on ? "bg-fg/15 text-fg" : "text-muted hover:bg-fg/10 hover:text-fg"}`}
               >
                 <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d={ICONS[t.key]} />

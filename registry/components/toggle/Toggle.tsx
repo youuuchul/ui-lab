@@ -54,7 +54,7 @@ export function Toggle({
         aria-describedby={description ? `${id}-desc` : undefined}
         disabled={disabled}
         onClick={toggle}
-        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed motion-reduce:transition-none ${
+        className={`relative inline-flex h-6 w-11 shrink-0 after:absolute after:-inset-y-2 after:inset-x-0 after:content-[''] items-center rounded-full transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed motion-reduce:transition-none ${
           on ? "bg-accent" : "bg-fg/20"
         }`}
       >

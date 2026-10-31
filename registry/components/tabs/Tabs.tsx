@@ -47,7 +47,7 @@ export function Tabs({ items, value, defaultValue, onChange, label, fitted = fal
 
   return (
     <div className={className}>
-      <div role="tablist" aria-label={label} onKeyDown={onKeyDown} className={`flex border-b border-line ${fitted ? "" : "gap-5"}`}>
+      <div role="tablist" aria-label={label} onKeyDown={onKeyDown} className={`flex border-b border-line ${fitted ? "" : "gap-1"}`}>
         {items.map((t, i) => {
           const selected = t.value === current;
           return (
@@ -64,14 +64,14 @@ export function Tabs({ items, value, defaultValue, onChange, label, fitted = fal
               tabIndex={selected ? 0 : -1}
               disabled={t.disabled}
               onClick={() => select(t.value)}
-              className={`relative -mb-px h-11 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40 motion-reduce:transition-none ${
-                fitted ? "flex-1" : "px-0.5"
+              className={`relative -mb-px h-11 text-sm font-medium tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40 motion-reduce:transition-none ${
+                fitted ? "flex-1" : "min-w-10 px-2"
               } ${selected ? "text-fg" : "text-muted hover:text-fg/80"}`}
             >
               {t.label}
               <span
                 aria-hidden="true"
-                className={`absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-fg transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none ${
+                className={`absolute bottom-0 h-0.5 rounded-full bg-fg ${fitted ? "inset-x-0" : "inset-x-2"} transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none ${
                   selected ? "scale-x-100" : "scale-x-0"
                 }`}
               />

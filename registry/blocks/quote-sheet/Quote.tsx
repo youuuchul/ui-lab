@@ -20,6 +20,8 @@ export interface QuoteProps {
   notes?: string[];
   steps?: { k: string; v: string }[];
   footer?: ReactNode;
+  /** 제목 태그 수준. 쓰는 페이지에 이미 h1이 있으면 올려 맞춘다. 묶음 제목은 한 단계 아래 */
+  headingLevel?: 1 | 2 | 3 | 4;
   className?: string;
 }
 
@@ -34,19 +36,23 @@ export function Quote({
   notes,
   steps,
   footer,
+  headingLevel = 2,
   className = "",
 }: QuoteProps) {
+  const H = `h${headingLevel}` as "h1" | "h2" | "h3" | "h4";
+  const G = `h${Math.min(headingLevel + 1, 6)}` as "h2" | "h3" | "h4" | "h5";
+  const O = `h${Math.min(headingLevel + 2, 6)}` as "h3" | "h4" | "h5" | "h6";
   return (
     <div className={`@container text-fg ${className}`}>
       <header>
         {kicker && <p className="text-sm font-bold text-accent">{kicker}</p>}
-        <h1 className="mt-2 text-[clamp(26px,4vw,40px)] leading-tight font-extrabold tracking-[-0.035em]">{title}</h1>
+        <H className="mt-2 text-[clamp(26px,4vw,40px)] leading-tight font-extrabold tracking-[-0.035em]">{title}</H>
         {sub && <p className="mt-3 text-fg/70">{sub}</p>}
       </header>
 
       {groups.map((g) => (
         <section key={g.name} className="mt-10" aria-label={g.name}>
-          <h2 className="border-b-2 border-fg pb-2.5 text-[13px] font-extrabold tracking-[0.04em] text-accent">{g.name}</h2>
+          <G className="border-b-2 border-fg pb-2.5 text-[13px] font-extrabold tracking-[0.04em] text-accent">{g.name}</G>
           <ul>
             {g.offers.map((o) => (
               <li
@@ -54,7 +60,7 @@ export function Quote({
                 className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-5 gap-y-3 border-b border-line py-4 @xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1.5fr)_72px]"
               >
                 <div>
-                  <h3 className="text-[17px] font-extrabold tracking-[-0.02em]">{o.title}</h3>
+                  <O className="text-[17px] font-extrabold tracking-[-0.02em]">{o.title}</O>
                   <p className="mt-1.5 text-sm leading-relaxed text-fg/85">{o.what}</p>
                 </div>
                 <dl className="col-span-full row-start-2 grid grid-cols-[52px_minmax(0,1fr)] gap-2 text-[13px] leading-normal @xl:col-span-1 @xl:row-start-auto">

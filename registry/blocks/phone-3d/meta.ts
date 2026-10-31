@@ -8,5 +8,5 @@ export const meta: ItemMeta = {
   tall: true,
   tags: ["3D", "WebGL", "목업"],
   added: "2026-10-31",
-  source: { project: "portfolio-site" },
+  source: { project: "웹 포트폴리오", url: "https://youuuchul.github.io/" },
 };

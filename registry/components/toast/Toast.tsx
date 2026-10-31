@@ -14,7 +14,7 @@ export interface ToastProps {
   scope?: "viewport" | "parent";
 }
 
-const EXIT_MS = 200;
+const EXIT_MS = 150;
 
 export function Toast({ open, onOpenChange, message, action, duration = 3000, tone = "default", scope = "viewport" }: ToastProps) {
   const [mounted, setMounted] = useState(open);
@@ -53,8 +53,8 @@ export function Toast({ open, onOpenChange, message, action, duration = 3000, to
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className={`${scope === "viewport" ? "fixed bottom-6" : "absolute bottom-4"} left-1/2 z-50 flex w-[min(24rem,calc(100%-2rem))] -translate-x-1/2 items-center gap-3 rounded-2xl px-4 py-3 shadow-lg shadow-black/40 transition-[opacity,translate] duration-200 motion-reduce:transition-none ${
-        shown ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+      className={`${scope === "viewport" ? "fixed bottom-6" : "absolute bottom-4"} left-1/2 z-50 flex w-[min(24rem,calc(100%-2rem))] -translate-x-1/2 items-center gap-3 rounded-2xl border border-line px-4 py-3 shadow-lg shadow-black/40 transition-[opacity,translate] motion-reduce:transition-none ${
+        shown ? "translate-y-0 opacity-100 duration-200" : "translate-y-3 opacity-0 duration-150"
       } ${tone === "error" ? "bg-red-500/95 text-white" : "bg-fg text-bg"}`}
     >
       <p className="min-w-0 flex-1 text-sm font-medium">{message}</p>
@@ -65,7 +65,7 @@ export function Toast({ open, onOpenChange, message, action, duration = 3000, to
             action.onClick();
             onOpenChangeRef.current(false);
           }}
-          className={`shrink-0 rounded-lg px-2 py-1 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-current ${
+          className={`-my-2 -mr-2 inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center rounded-lg px-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-current ${
             tone === "error" ? "text-white underline" : "text-accent hover:bg-bg/10"
           }`}
         >

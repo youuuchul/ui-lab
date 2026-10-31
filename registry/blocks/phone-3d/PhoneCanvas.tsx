@@ -80,9 +80,7 @@ export function PhoneCanvas({ screen, tone, height, label, className = "", fallb
         hover.current.x = 0;
         hover.current.y = 0;
       }}
-      onPointerDown={(e) => {
-        if (e.pointerType !== "mouse") enableDeviceTilt();
-      }}
+      onClick={() => enableDeviceTilt()}
     >
       <canvas ref={ref} className="block h-full w-full transition-opacity duration-300" style={{ opacity: ready ? 1 : 0 }} />
       {!ready && fallback && <div className="absolute inset-0 grid place-items-center">{fallback}</div>}

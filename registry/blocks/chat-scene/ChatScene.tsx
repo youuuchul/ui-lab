@@ -27,6 +27,7 @@ export function ChatScene({ images, initial, suggestions, seconds, reply }: Chat
   const [left, setLeft] = useState(seconds);
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const round = useRef(0);
   const over = left <= 0;
 
   useEffect(() => {
@@ -40,11 +41,27 @@ export function ChatScene({ images, initial, suggestions, seconds, reply }: Chat
   }, [log]);
 
   const send = async (text: string) => {
+    const mine = round.current;
     setLog((l) => [...l, { role: "user", content: text }, { role: "assistant", content: "" }]);
     setBusy(true);
-    const r = await reply(text);
-    setExpression(r.expression);
-    setLog((l) => [...l.slice(0, -1), { role: "assistant", content: r.content }]);
+    try {
+      const r = await reply(text);
+      if (mine !== round.current) return;
+      setExpression(r.expression);
+      setLog((l) => [...l.slice(0, -1), { role: "assistant", content: r.content }]);
+    } catch {
+      if (mine !== round.current) return;
+      setLog((l) => [...l.slice(0, -1), { role: "system", content: "답을 받지 못했어요. 다시 보내 주세요" }]);
+    } finally {
+      if (mine === round.current) setBusy(false);
+    }
+  };
+
+  const restart = () => {
+    round.current += 1;
+    setLog(initial);
+    setExpression("default");
+    setLeft(seconds);
     setBusy(false);
   };
 
@@ -63,6 +80,15 @@ export function ChatScene({ images, initial, suggestions, seconds, reply }: Chat
             <ChatBubble key={i} {...m} distanceFromLatest={log.length - 1 - i} />
           ))}
         </div>
+        {over && (
+          <button
+            type="button"
+            onClick={restart}
+            className="h-10 self-center rounded-full bg-white/15 px-5 text-sm font-semibold text-white backdrop-blur transition-[transform,background-color] hover:bg-white/25 active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            다시 시작
+          </button>
+        )}
         <ChatInput
           onSend={send}
           disabled={busy || over}

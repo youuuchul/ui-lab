@@ -19,19 +19,23 @@ function fade(distance: number) {
 
 export function ChatBubble({ role, content, distanceFromLatest = 0, forceReadable = false }: ChatBubbleProps) {
   const [pressed, setPressed] = useState(false);
-  const opacity = pressed || forceReadable ? 1 : fade(distanceFromLatest);
+  const [focused, setFocused] = useState(false);
+  const opacity = pressed || focused || forceReadable ? 1 : fade(distanceFromLatest);
   const recent = distanceFromLatest <= 1;
   const press = {
     onPointerDown: () => setPressed(true),
     onPointerUp: () => setPressed(false),
     onPointerLeave: () => setPressed(false),
     onPointerCancel: () => setPressed(false),
+    tabIndex: 0,
+    onFocus: () => setFocused(true),
+    onBlur: () => setFocused(false),
   };
 
   if (role === "system") {
     return (
-      <div className="flex justify-center py-2">
-        <span className="rounded-full bg-yellow-500/20 px-4 py-1.5 text-xs text-yellow-200 transition-opacity duration-200" style={{ opacity }} {...press}>
+      <div role="status" className="flex justify-center py-2">
+        <span className="rounded-full bg-yellow-500/20 px-4 py-1.5 text-xs text-yellow-200 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent duration-200" style={{ opacity }} {...press}>
           {content}
         </span>
       </div>
@@ -44,9 +48,9 @@ export function ChatBubble({ role, content, distanceFromLatest = 0, forceReadabl
   if (!isUser) {
     return (
       <div className="flex justify-start transition-opacity duration-200" style={{ opacity }}>
-        <div {...press} className="max-w-[82%] cursor-pointer space-y-1.5 select-none">
+        <div {...press} className="max-w-[82%] cursor-pointer space-y-1.5 select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
           {segments.length === 0 ? (
-            <div className="rounded-2xl rounded-bl-sm bg-black/65 px-4 py-2.5 text-sm animate-pulse">...</div>
+            <div className="rounded-2xl rounded-bl-sm bg-black/65 px-4 py-2.5 text-sm motion-safe:animate-pulse">...</div>
           ) : (
             segments.map((s, i) =>
               s.type === "narration" ? (
@@ -74,7 +78,7 @@ export function ChatBubble({ role, content, distanceFromLatest = 0, forceReadabl
     <div className="flex justify-end transition-opacity duration-200" style={{ opacity }}>
       <div
         {...press}
-        className={`max-w-[75%] cursor-pointer rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words text-white shadow-lg shadow-black/40 backdrop-blur-md select-none ${
+        className={`max-w-[75%] cursor-pointer rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words text-white shadow-lg shadow-black/40 backdrop-blur-md select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
           recent ? "bg-accent/95" : "bg-accent/70"
         }`}
       >

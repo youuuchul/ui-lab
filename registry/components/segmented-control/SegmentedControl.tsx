@@ -86,11 +86,11 @@ export function SegmentedControl<T extends string>({
             tabIndex={selected ? 0 : -1}
             disabled={disabled}
             onClick={() => select(i)}
-            className={`relative z-10 truncate rounded-lg font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:cursor-not-allowed ${
-              size === "sm" ? "h-7 px-2.5 text-[13px]" : "h-9 px-3 text-sm"
+            className={`relative z-10 rounded-lg font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:cursor-not-allowed ${
+              size === "sm" ? "h-7 px-2.5 text-[13px] after:absolute after:inset-x-0 after:-inset-y-[6px] after:content-['']" : "h-10 px-3 text-sm"
             } ${selected ? "text-fg" : "text-muted hover:text-fg/80"}`}
           >
-            {o.label}
+            <span className="block truncate">{o.label}</span>
           </button>
         );
       })}
