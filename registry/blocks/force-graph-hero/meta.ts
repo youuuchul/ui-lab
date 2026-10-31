@@ -8,5 +8,5 @@ export const meta: ItemMeta = {
   tall: true,
   tags: ["3D", "데이터", "첫 화면"],
   added: "2026-10-31",
-  source: { project: "웹 포트폴리오", url: "https://youuuchul.github.io/" },
+  source: { project: "포트폴리오 사이트", url: "https://youuuchul.github.io/" },
 };

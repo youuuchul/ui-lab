@@ -8,6 +8,6 @@ export const meta: ItemMeta = {
   order: 3,
   tags: ["캐러셀", "3D", "제스처"],
   added: "2026-10-31",
-  source: { project: "웹 포트폴리오", url: "https://youuuchul.github.io/" },
+  source: { project: "포트폴리오 사이트", url: "https://youuuchul.github.io/" },
   rules: {"do": ["서비스·작품처럼 5~10개를 한 번에 훑고 하나를 고르는 곳에 쓴다.", "끌기·휠·키보드·버튼을 모두 열어 둔다."], "dont": ["목록이 길어 찾기가 중요한 곳에는 쓰지 않는다. 검색·그리드를 쓴다.", "카드 안에 다시 가로 스크롤을 넣지 않는다. 제스처가 겹친다."]},
 };

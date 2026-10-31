@@ -36,13 +36,13 @@ npm run check:next   # Next 호환 확인
 <!-- catalog:start -->
 | 이름                                                                  | 종류      | 분류     | 출처                     |
 |-----------------------------------------------------------------------|-----------|----------|--------------------------|
-| [사례 바인더](registry/blocks/career-binder)                          | 적용 사례 |          | 웹 포트폴리오            |
+| [사례 바인더](registry/blocks/career-binder)                          | 적용 사례 |          | 포트폴리오 사이트        |
 | [캐릭터 대화 화면](registry/blocks/chat-scene)                        | 적용 사례 |          | HeartTable AI            |
-| [3D 역량 그래프 히어로](registry/blocks/force-graph-hero)             | 적용 사례 |          | 웹 포트폴리오            |
+| [3D 역량 그래프 히어로](registry/blocks/force-graph-hero)             | 적용 사례 |          | 포트폴리오 사이트        |
 | [추리 게임 플레이 화면](registry/blocks/murder-mystery-play)          | 적용 사례 |          | Murder Mystery Generator |
 | [PetGlobe 첫 화면](registry/blocks/petglobe-home)                     | 적용 사례 |          | PetGlobe                 |
-| [3D 폰 목업](registry/blocks/phone-3d)                                | 적용 사례 |          | 웹 포트폴리오            |
-| [견적 안내 시트](registry/blocks/quote-sheet)                         | 적용 사례 |          | 웹 포트폴리오            |
+| [3D 폰 목업](registry/blocks/phone-3d)                                | 적용 사례 |          | 포트폴리오 사이트        |
+| [견적 안내 시트](registry/blocks/quote-sheet)                         | 적용 사례 |          | 포트폴리오 사이트        |
 | [아코디언](registry/components/accordion)                             | 컴포넌트  | 탐색     |                          |
 | [배지](registry/components/badge)                                     | 컴포넌트  | 상태     |                          |
 | [버튼](registry/components/button)                                    | 컴포넌트  | 입력     |                          |
@@ -51,14 +51,14 @@ npm run check:next   # Next 호환 확인
 | [원형 카운트다운](registry/components/countdown-ring)                 | 컴포넌트  | 상태     | HeartTable AI            |
 | [크로스페이드 이미지 스택](registry/components/crossfade-image-stack) | 컴포넌트  | 미디어   | HeartTable AI            |
 | [증거 목록 행](registry/components/evidence-row)                      | 컴포넌트  | 미디어   | Murder Mystery Generator |
-| [폭 맞춤 타이포](registry/components/fit-text)                        | 컴포넌트  | 모션     | 웹 포트폴리오            |
+| [폭 맞춤 타이포](registry/components/fit-text)                        | 컴포넌트  | 모션     | 포트폴리오 사이트        |
 | [은하수 글로브](registry/components/galaxy-globe)                     | 컴포넌트  | 모션     | PetGlobe                 |
 | [로딩 오버레이](registry/components/loading-overlay)                  | 컴포넌트  | 오버레이 | HeartTable AI            |
 | [인물 선택 목록](registry/components/portrait-choice)                 | 컴포넌트  | 입력     | Murder Mystery Generator |
-| [마스크 텍스트 등장](registry/components/rise-text)                   | 컴포넌트  | 모션     | 웹 포트폴리오            |
+| [마스크 텍스트 등장](registry/components/rise-text)                   | 컴포넌트  | 모션     | 포트폴리오 사이트        |
 | [세그먼트 컨트롤](registry/components/segmented-control)              | 컴포넌트  | 입력     |                          |
 | [세그먼트 프로그레스](registry/components/segmented-progress)         | 컴포넌트  | 상태     |                          |
-| [원형 3D 캐러셀](registry/components/service-carousel)                | 컴포넌트  | 탐색     | 웹 포트폴리오            |
+| [원형 3D 캐러셀](registry/components/service-carousel)                | 컴포넌트  | 탐색     | 포트폴리오 사이트        |
 | [스켈레톤](registry/components/skeleton)                              | 컴포넌트  | 상태     |                          |
 | [탭](registry/components/tabs)                                        | 컴포넌트  | 탐색     |                          |
 | [텍스트 필드](registry/components/text-field)                         | 컴포넌트  | 입력     |                          |
