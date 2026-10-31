@@ -98,27 +98,35 @@ function Sidebar({ current }: { current?: string }) {
       {label}
     </a>
   );
+  const section = (title: string, children: ReactNode) => (
+    <section key={title} className="border-t border-line pt-5 first:border-t-0 first:pt-0">
+      <h2 className="mb-2 px-3 text-[13px] font-bold tracking-wide text-fg">{title}</h2>
+      {children}
+    </section>
+  );
+  const docSection = (label: string) => {
+    const s = docSections.find((d) => d.label === label);
+    return s ? section(s.label, s.docs.map((d) => link(`#/docs/${d.slug}`, d.title, current === `docs/${d.slug}`))) : null;
+  };
   const body = (
-    <div className="flex flex-col gap-6 text-sm">
-      {docSections.map((s) => (
-        <section key={s.label}>
-          <h2 className="mb-1.5 px-3 font-semibold text-fg">{s.label}</h2>
-          {s.docs.map((d) => link(`#/docs/${d.slug}`, d.title, current === `docs/${d.slug}`))}
-        </section>
-      ))}
-      <section>
-        <h2 className="mb-1.5 px-3 font-semibold text-fg">적용 사례</h2>
-        {blocks.map((b) => link(`#/${b.id}`, b.meta.title, current === b.id))}
-      </section>
-      <section>
-        <h2 className="mb-1.5 px-3 font-semibold text-fg">컴포넌트</h2>
-        {byGroup.map((g) => (
-          <div key={g.key} className="mb-3">
-            <h3 className="px-3 py-1 text-xs font-medium text-muted/70">{g.label}</h3>
-            {g.items.map((c) => link(`#/${c.id}`, c.meta.title, current === c.id))}
+    <div className="flex flex-col gap-5 text-sm">
+      {docSection("시작하기")}
+      {docSection("기획")}
+      {section("적용 사례", blocks.map((b) => link(`#/${b.id}`, b.meta.title, current === b.id)))}
+      {docSection("요소")}
+      {section(
+        "컴포넌트",
+        byGroup.map((g) => (
+          <div key={g.key} className="mt-3 first:mt-0">
+            <p aria-hidden="true" className="px-3 pb-1 text-[11px] font-medium tracking-wider text-muted/60 select-none">
+              {g.label}
+            </p>
+            <div role="group" aria-label={g.label} className="ml-3 border-l border-line pl-1.5">
+              {g.items.map((c) => link(`#/${c.id}`, c.meta.title, current === c.id))}
+            </div>
           </div>
-        ))}
-      </section>
+        )),
+      )}
     </div>
   );
   return (

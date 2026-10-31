@@ -28,7 +28,6 @@ JSON은 배포할 때 `registry/` 폴더에서 다시 만든다. 손으로 고�
 | [추리 게임 플레이 화면](#/blocks/murder-mystery-play)          | 적용 사례 | Murder Mystery Generator | `/r/murder-mystery-play.json`   |
 | [PetGlobe 첫 화면](#/blocks/petglobe-home)                     | 적용 사례 | PetGlobe                 | `/r/petglobe-home.json`         |
 | [3D 폰 목업](#/blocks/phone-3d)                                | 적용 사례 | 포트폴리오 사이트        | `/r/phone-3d.json`              |
-| [견적 안내 시트](#/blocks/quote-sheet)                         | 적용 사례 | 포트폴리오 사이트        | `/r/quote-sheet.json`           |
 | [아코디언](#/components/accordion)                             | 컴포넌트  | 탐색                     | `/r/accordion.json`             |
 | [배지](#/components/badge)                                     | 컴포넌트  | 상태                     | `/r/badge.json`                 |
 | [버튼](#/components/button)                                    | 컴포넌트  | 입력                     | `/r/button.json`                |

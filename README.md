@@ -42,7 +42,6 @@ npm run check:next   # Next 호환 확인
 | [추리 게임 플레이 화면](registry/blocks/murder-mystery-play)          | 적용 사례 |          | Murder Mystery Generator |
 | [PetGlobe 첫 화면](registry/blocks/petglobe-home)                     | 적용 사례 |          | PetGlobe                 |
 | [3D 폰 목업](registry/blocks/phone-3d)                                | 적용 사례 |          | 포트폴리오 사이트        |
-| [견적 안내 시트](registry/blocks/quote-sheet)                         | 적용 사례 |          | 포트폴리오 사이트        |
 | [아코디언](registry/components/accordion)                             | 컴포넌트  | 탐색     |                          |
 | [배지](registry/components/badge)                                     | 컴포넌트  | 상태     |                          |
 | [버튼](registry/components/button)                                    | 컴포넌트  | 입력     |                          |

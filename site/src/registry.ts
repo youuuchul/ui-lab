@@ -62,7 +62,7 @@ export const groupLabel = (g?: Group) => GROUPS.find((x) => x.key === g)?.label 
 
 export const categoryLabel: Record<Category, string> = { blocks: "적용 사례", components: "컴포넌트" };
 
-const SECTIONS: Record<string, string> = { "getting-started": "시작하기", elements: "요소", pm: "기획" };
+const SECTIONS: Record<string, string> = { "getting-started": "시작하기", pm: "기획", elements: "요소" };
 
 export interface Doc {
   slug: string;
