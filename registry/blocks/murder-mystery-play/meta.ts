@@ -5,7 +5,7 @@ export const meta: ItemMeta = {
   summary: "단서를 모아 읽고 범인을 지목하는 머더 미스터리 플레이어 화면.",
   category: "blocks",
   blockGroup: "game",
-  order: 3,
+  order: 2,
   tags: ["게임", "캐릭터", "목록", "투표"],
   added: "2026-10-31",
   source: { project: "Murder Mystery Generator", url: "https://murdermysterygenerator.shop" },

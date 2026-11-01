@@ -5,7 +5,7 @@ export const meta: ItemMeta = {
   summary: "창가 그림 속 유리구에 은하수 글로브를 겹치고, 세 장면으로 서비스를 소개하는 온보딩 첫 화면.",
   category: "blocks",
   blockGroup: "intro",
-  order: 2,
+  order: 1,
   tags: ["온보딩", "캔버스", "첫 화면"],
   added: "2026-10-31",
   source: { project: "PetGlobe", url: "https://petglobe.app" },
